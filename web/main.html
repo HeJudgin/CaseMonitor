@@ -1,0 +1,293 @@
+ <!--A Design by W3layouts 
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+<!DOCTYPE html>
+-->
+
+<html>
+<head>
+<title>Case Annotations</title>
+<!--css-->
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!--css-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Conjugal  Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--timer-->
+<link rel="stylesheet" href="css/jquery.countdown.css" />
+<!--timer-->
+<!--js-->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--js--> 
+<!--webfonts-->
+<link href='//fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!--webfonts-->
+<!--startsmothscrolling-->
+<script type="text/javascript" src="js/move-top.js"></script>
+<script type="text/javascript" src="js/easing.js"></script>
+ <script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){		
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+			});
+		});
+	</script>
+<!--endsmothscrolling-->
+
+<script type="text/javascript">
+
+$(function(){
+getWelMsg();
+getUnlabeledData();
+setInterval(getWelMsg, 5000);
+});
+
+function getWelMsg(){
+    var url = 'user/getSessionAttr';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{page_index:"main"},
+		success: function fun(data){
+		    if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+			document.getElementById("top_menus").innerHTML = data['top_menu_html'];
+		    document.getElementById("welcome_msg").innerHTML = data['username'];
+		    document.getElementById("label_msg").innerHTML = data['label_msg'];
+		    document.getElementById("foot_msg").innerHTML = data['foot_msg'];
+		}
+		    
+	});
+}
+
+function logout(){
+    var url = 'user/logout';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{},
+		success: function fun(data){
+		    window.location.href = data['url'];
+		}
+		    
+	});
+}
+
+function onGetMessage(html_str) 
+{
+    var container = document.getElementById("msg_body");
+    //alert(html_str);
+    container.innerHTML = "";
+	container.innerHTML += html_str;
+    //container.scrollTop = container.scrollHeight;
+} 
+
+//getUnLabeledData
+function getUnlabeledData()
+{
+    var url = 'data/getUnLabeledData';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{num:'2'},
+		success: function fun(data){
+		    if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+		    if(data['status']=='success'){
+				onGetMessage(data['html']);
+			}
+		}
+	});
+}
+
+function addKwds(obj){
+    var txt = obj.innerHTML;
+    if(txt.substring(0, 1) == "[" && txt.substring(txt.length-1, txt.length) == "]" ){
+        obj.innerHTML = txt.substring(1, txt.length-1);
+        obj.style.fontSize = "15px"
+    }else{
+        obj.innerHTML = "["+txt+"]";
+        obj.style.fontSize = "20px"
+    }
+  
+}
+
+function addLabel(obj, obj_id){
+    var tags = document.getElementById(obj_id).childNodes;
+    for(var i=0; i<tags.length; i++){
+        if (tags[i].nodeType == 1 && tags[i].getAttribute("lab") == "rel") {
+            
+            var txt = tags[i].innerHTML;
+            //alert(txt);
+            if(txt.substring(0, 1) == "|" && txt.substring(txt.length-1, txt.length) == "|" ){
+                tags[i].innerHTML = txt.substring(1, txt.length-1);
+                tags[i].style.fontSize = "15px"
+            }
+        }
+    }
+    var txt = obj.innerHTML;
+    if(txt.substring(0, 1) == "|" && txt.substring(txt.length-1, txt.length) == "|" ){
+        obj.innerHTML = txt.substring(1, txt.length-1);
+        obj.style.fontSize = "15px"
+    }else{
+        obj.innerHTML = "|"+txt+"|";
+        obj.style.fontSize = "20px"
+    }
+  
+}
+
+
+
+
+function submitRow(obj){
+    //alert("submit "+obj);
+    var qry_kwd = "";
+    var title_kwd = "";
+    var rel_val = "";
+    var note_msg = "请标注";
+    var container = document.getElementById(obj);
+    var cs = container.childNodes;
+    for(i=0; i<cs.length; i++){
+        if(cs[i].nodeType==1){
+            //alert(cs[i].getAttribute("lab") + " = " + cs[i].innerHTML);
+            var txt = cs[i].innerHTML;
+            if((txt.substring(0, 1) == "[" && txt.substring(txt.length-1, txt.length) == "]") ||
+                (txt.substring(0, 1) == "|" && txt.substring(txt.length-1, txt.length) == "|")){
+                if(cs[i].getAttribute("lab") == "qry"){  
+                    qry_kwd += txt.substring(1, txt.length -1) +"\2"
+                }
+                if(cs[i].getAttribute("lab") == "title"){  
+                    title_kwd += txt.substring(1, txt.length -1) +"\2"
+                }
+                if(cs[i].getAttribute("lab") == "rel"){  
+                    rel_val += txt.substring(1, txt.length -1) +"\2"
+                }
+            }
+        }
+    }
+    if(qry_kwd =="" ){
+        note_msg += "查询关键词"
+    }
+    if(title_kwd =="" ){
+        note_msg += " 标题关键词"
+    }
+    if(rel_val =="" ){
+        note_msg += " 相关性分数"
+    }
+    if(qry_kwd !="" && title_kwd!="" && rel_val != ""){
+        //alert("kwd extract qry_kwd:"+qry_kwd+" ,title_kwd："+title_kwd +", rel_val:" +rel_val);
+        submitRowRequest(obj, rel_val, qry_kwd+"\1"+title_kwd, "", "", "huazhang");
+        
+    }else{
+        alert("标注不完整, "+note_msg+" 未标注");
+        return;
+    }
+    
+}
+
+
+function submitRowRequest(res_id, rel_val, kwds, entitys, exts, tab){
+    var url = 'data/setUnlabeledData';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{res_id:res_id+'', rel_val:rel_val+'', kwds:kwds+'', entitys:entitys+'', exts:exts+'', tab:tab+''},
+		success: function fun(data){
+		    if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+		    if(data['status']=='success'){
+				//alert("ok");
+				getUnlabeledData();
+				getWelMsg();
+			}
+		}
+	});
+}
+
+</script>
+</head>
+<body>
+	<div class="header" id="head">
+		<div class="container">
+			<div class="header-menu">
+				<nav class="navbar navbar-default">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+						  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						  </button>
+							<div class="navbar-brand logo">
+								<h1><a href="main.html">Case Annotations</a></h1>
+							</div>
+						</div>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav" id="top_menus">
+							<!-- 
+							<li class="active"><a href="#" onclick="getUnlabeledData();" data-hover="Home">去标注</a></li>
+								<li><a data-hover="Photos" href="labeled.html">已标注</a></li>
+								<li><a data-hover="Photos" href="utils.html">操作</a></li>
+							 -->
+								
+							</ul>
+						</div><!-- /.navbar-collapse -->
+					
+						
+					</div><!-- /.container-fluid -->
+					
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" id="welcome">
+						     <h4 style="color:white;">欢迎您&nbsp; &nbsp; &nbsp; <span id="welcome_msg">-</span> &nbsp; &nbsp; &nbsp;  <a onclick="logout();"><span class="anchorjs-icon">注销</span></a></h4>
+						</div>
+				</nav>
+			<div class="clearfix"></div>
+			</div>	
+		</div> 
+	</div>
+		<!--header-->		
+		<div class="page">
+			<div class="container">
+			    <div class="short-heading">
+				    <h4 style="color:black;"><span id="label_msg">-</span></h4>
+				    <br>
+				    
+			    </div>
+			    <!-- 
+				<div class="short-heading">
+					<h3 class="tittle">Case Annotations </h3>
+				</div>
+				<div class="grid_3 grid_4">
+					<div class="page-header">
+			  </div>
+				 -->
+				<!--button-->
+				
+             <div id="msg_body" class="table-responsive"  style="overflow-y:auto;height:50%;">
+             </div>
+			 <br>
+		</div>
+		<div class="col-sm-offset-0 col-sm-12" align=center>
+		<p id="foot_msg">copyright@2019 hejiajin@sogou-inc.com</p>
+	    </div>	
+	</div>
+	
+</body>
+</html>

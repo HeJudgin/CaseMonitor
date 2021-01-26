@@ -1,0 +1,333 @@
+ <!--A Design by W3layouts 
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+<!DOCTYPE html>
+-->
+<html>
+<head>
+<meta name="referrer" content="no-referrer" /><!--页面头部添加-->
+<title>ADRW IMAGE SERVER</title>
+<!--css-->
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="css/swipebox.css" type="text/css" media="all">
+<!--css-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="IMAGES" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--timer-->
+<link rel="stylesheet" href="css/jquery.countdown.css" />
+<!--timer-->
+<!--js-->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--js-->
+<!--webfonts-->
+<link href='//fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!--webfonts-->
+<!-- swipe box js -->
+<script src="js/jquery.swipebox.min.js"></script> 
+	<script type="text/javascript">
+		jQuery(function($) {
+			$(".swipebox").swipebox();
+		});
+</script>
+<!-- //swipe box js -->
+<!--startsmothscrolling-->
+<script type="text/javascript" src="js/move-top.js"></script>
+<script type="text/javascript" src="js/easing.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+	});
+});
+</script>
+<!--endsmothscrolling-->
+
+<script>  
+        var Select = {  
+        del : function(obj,e){  
+            if((e.keyCode||e.which||e.charCode) == 8){  
+                var opt = obj.options[0];  
+                opt.text = opt.value = opt.value.substring(0, opt.value.length>0?opt.value.length-1:0);  
+            }  
+        },  
+        write : function(obj,e){  
+            if((e.keyCode||e.which||e.charCode) == 8)return ;  
+                var opt = obj.options[0];  
+                opt.selected = "selected";  
+                opt.text = opt.value += String.fromCharCode(e.charCode||e.which||e.keyCode);  
+            }  
+        }  
+  
+         
+    </script>  
+
+<script type="text/javascript">
+function imgSugg()
+{
+    var qry = document.getElementById("query").value
+    var accid = document.getElementById("accid").value
+    var planid = document.getElementById("planid").value
+    var grpid = document.getElementById("grpid").value
+    var ckid = document.getElementById("ckid").value
+    var kwd = document.getElementById("kwd").value
+    var match_type = document.getElementById("match_type").value
+	var qry_cls = document.getElementById("qry_cls").value 
+	var kwd_cls = document.getElementById("kwd_cls").value
+    var pid = document.getElementById("pid").value
+	var serv_tp = document.getElementById("serv_tp").value
+	var city_region = document.getElementById("city_region").value 
+	var is_logo = document.getElementById("is_logo").value
+    var src_ctr = document.getElementById("src_ctr").value 
+    var obj = document.getElementById("ip")
+    var show_type = "";
+    $("input[name='show_type']:checked").each(function(i){
+        show_type += $(this).val()+",";
+    });
+    var recall_type = "";
+    $("input[name='recall_type']:checked").each(function(i){
+        recall_type += $(this).val()+",";
+    });
+    var index_sel = obj.selectedIndex
+    var ip = obj.options[index_sel].value
+    var port = document.getElementById("port").value 
+    if(ckid==""){
+        alert("CKID输入不可为空");
+        return;
+    }
+    document.getElementById("ad_qry").disabled = true
+    var container = document.getElementById("image_grid")
+    var url = 'data/imgSugg';
+    $.ajax({
+		type: 'POST',
+		url: url,
+		data:{query:qry+'', query_org:qry+'', kwd:kwd+'', accid:accid+'',planid:planid+'',grpid:grpid+'',ckid:ckid+'', kwd:kwd+'',
+		      match_type:match_type+'', qry_cls:qry_cls+'', kwd_cls:kwd_cls+'', pid:pid+'', serv_tp:serv_tp+'', 
+		      city_region:city_region+'', is_logo:is_logo+'', src_ctr:src_ctr+'', ip:ip+'', port:port+'', show_type:show_type+'', recall_type:recall_type+''},
+		success: function fun(data){
+		    if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+		    html_str = data['html_str'];
+		    container.innerHTML = html_str
+		    //container.scrollTo(0,0)
+		    container.scrollTop = 0
+		    document.getElementById("ad_qry").disabled = false
+		    document.getElementById("query").value = data['query_grp']
+		}
+	});
+}
+
+function imgSample(type)
+{
+    var qry = document.getElementById("query").value
+    var ckid = document.getElementById("ckid").value
+    document.getElementById("ad_qry").disabled = false
+    var kwd = ""
+    if(type == "kwd"){
+        kwd = document.getElementById("kwd").value   
+        document.getElementById("kwd_samp").disabled = true 
+    }else{
+        document.getElementById("rand_samp").disabled = true
+    }
+    var url = 'data/getRandSample';
+    $.ajax({
+		type: 'POST',
+		url: url,
+		data:{kwd:kwd+''},
+		success: function fun(data){
+		    if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+		    document.getElementById("accid").value = data['accid']
+		    document.getElementById("planid").value = data['planid']
+		    document.getElementById("grpid").value = data['grpid']
+		    document.getElementById("ckid").value = data['ckid']
+		    document.getElementById("query").value = data['query']
+		    document.getElementById("kwd").value = data['kwd']
+		    document.getElementById("match_type").value = data['match_type']
+		    document.getElementById("qry_cls").value = data['qry_cls']
+		    document.getElementById("kwd_cls").value = data['kwd_cls']
+		    document.getElementById("pid").value = data['pid']
+		    document.getElementById("serv_tp").value = data['serv_tp']
+		    document.getElementById("city_region").value = data['city_region']
+		    document.getElementById("is_logo").value = data['is_logo']
+		    document.getElementById("src_ctr").value = data['src_ctr']
+		    document.getElementById("kwd_samp").disabled = false
+		    document.getElementById("rand_samp").disabled = false
+		}
+	});
+}
+</script>
+
+</head>
+<body>
+<div class="page" style="padding:0px; margin_top:0px; margin_bottom:0px; ">
+    <div class="container" style="padding:0px; margin_top:0px; margin_bottom:0px; ">	  
+
+    <!--Forms-->
+     <!--
+    <div class="short-heading"><h3 class="tittle">ImageServer</h3></div>
+    -->
+    <div class="page-header" style="padding:0px; margin_top:0px; margin_bottom:0px; "><h3>ImageServer</h3></div>
+	        <div class="bs-example animated wow fadeInRight" data-wow-duration="1000ms" data-example-id="simple-horizontal-form" style="padding:0px; margin_top:0px; margin_bottom:0px; ">
+        
+        <div class="form-group">
+            <div>
+            <div class="col-sm-2">
+                <label>MATCH_TYPE</label>
+                <input type="text" class="form-control" name="match_type" id="match_type" placeholder="match_type">
+            </div>
+            <div class="col-sm-2">
+                <label>QRY_CLS</label>
+                <input type="text" class="form-control" name="qry_cls" id="qry_cls" placeholder="qry_cls">
+            </div>
+            <div class="col-sm-2">
+                <label>KWD_CLS</label>
+                <input type="text" class="form-control" name="kwd_cls" id="kwd_cls" placeholder="kwd_cls">
+            </div>
+            <div class="col-sm-2">
+                <label>PID</label>
+                <input type="text" class="form-control" name="pid" id="pid" placeholder="pid">
+            </div>
+          
+            <div class="col-sm-2">
+                <label>SERV_TYPE</label>
+                <input type="text" class="form-control" name="serv_tp" id="serv_tp" placeholder="serv_tp">
+            </div>
+            <div class="col-sm-2">
+                <label>REGION</label>
+                <input type="text" class="form-control" name="city_region" id="city_region" placeholder="city_region">
+            </div>
+            <div class="col-sm-2">
+                <label>IS_LOGO</label>
+                <input type="text" class="form-control" name="is_logo" id="is_logo" placeholder="is_logo">
+            </div>
+            <div class="col-sm-2">
+                <label>SRC_CTR</label>
+                <input type="text" class="form-control" name="src_ctr" id="src_ctr" placeholder="src_ctr">
+            </div>
+            <div class="col-sm-3">
+                <label>SVR</label>
+                <select id="ip" name="ip" class="form-control" onkeydown="Select.del(this,event)" onkeypress="Select.write(this,event)">
+                    <option value=""></option>
+                    <option selected="selected" value="10.160.53.126">图片服务</option>
+                    <option selected="" value="10.160.68.87">EXP</option>
+                    <option value="10.134.108.39">子链测试</option>
+                    <option value="10.134.13.23">调试</option>
+                    
+                    
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label>PORT</label>
+                <input type="text" class="form-control" name="port" id="port" placeholder="ip" value="61702">
+            </div> 
+            <br><br><br><br><br><br><br>
+            <div class="col-sm-4">
+              <label>渲染选项</label>
+              <div class="checkbox">
+				<label>
+					  <input name="show_type" type="checkbox" checked="checked" value="0"> 客户广告
+				</label>
+				<label>
+					  <input name="show_type" type="checkbox" value="1"> 特殊广告
+				</label>
+				<label>
+					  <input name="show_type" type="checkbox" value="2"> 子链
+				</label>
+				<label>
+					  <input name="show_type" type="checkbox" value="3"> 其他组件
+				</label>
+			  </div>
+			</div>  
+			
+			<div class="col-sm-6">
+              <label>触发方式</label>
+              <div class="checkbox">
+				<label>
+					  <input name="recall_type" type="checkbox" checked="checked" value="ALL"> 全部
+				</label>
+				<label>
+					  <input name="recall_type" type="checkbox" value="OFFLINE"> 索引
+				</label>
+				<label>
+					  <input name="recall_type" type="checkbox" value="Annoy"> 语义NN
+				</label>
+				<label>
+					  <input name="recall_type" type="checkbox" value="Ge-idx"> Graph索引
+				</label>
+				<label>
+					  <input name="recall_type" type="checkbox" value="Ge-nn"> Graph-NN
+				</label>
+				<label>
+					  <input name="recall_type" type="checkbox" value="Recall"> 其他
+				</label>
+			  </div>
+			</div>
+			  
+            </div>
+            <br><br><br><br>
+            <!-- style="display: none" -->
+            <label for="accid" class="col-sm-1 control-label" >ACCID</label>
+            <div class="col-sm-2" >
+                <input type="text" class="form-control" name="accid" id="accid" placeholder="" value="">
+            </div>
+            <label for="planid" class="col-sm-1 control-label" >PLANID</label>
+            <div class="col-sm-2" >
+                <input type="text" class="form-control" name="planid" id="planid" placeholder="" value="">
+            </div>
+            <label for="grpid" class="col-sm-1 control-label" >GRPID</label>
+            <div class="col-sm-2" >
+                <input type="text" class="form-control" name="grpid" id="grpid" placeholder="" value="">
+            </div>
+            <label for="ckid" class="col-sm-1 control-label" >CKID</label>
+            <div class="col-sm-2" >
+                <input type="text" class="form-control" name="ckid" id="ckid" placeholder="" value="">
+            </div>
+            <br/><br/>
+            
+            <label for="query" class="col-sm-1 control-label">QUERY</label>
+            <div class="col-sm-11">
+                <input type="text" class="form-control" name="query" id="query" placeholder="">
+            </div><br/><br/>
+            <label for="query" class="col-sm-1 control-label">KWD</label>
+            <div class="col-sm-11">
+                <input type="text" class="form-control" name="kwd" id="kwd" placeholder="" onblur="imgSample('kwd');">
+            </div><br/><br/>
+            
+         <div class="col-sm-10" align=center>
+             <button type="button" class="btn btn-1 btn-success" id="ad_qry" onclick="imgSugg();">广告查询</button>
+             <button type="button" class="btn btn-1 btn-success" id="rand_samp" onclick="imgSample();">随机采样</button>
+             <button type="button" class="btn btn-1 btn-success" id="kwd_samp" onclick="imgSample('kwd');">关键词采样</button>
+             
+         </div>
+         </div>	
+    </div>
+  </div>
+</div>	    
+<!--header-->		
+<div class="content" style="padding:0px; margin_top:0px; margin_bottom:0px; ">
+	<!--photos-->
+	<div class="photos" style="padding:0px; margin_top:0px; margin_bottom:0px; ">
+		<div class="container" style="padding:0px; margin_top:0px; margin_bottom:0px; ">
+		<!-- photos-grids couple-grids -->
+			<div class="couple-grids" id="image_grid" style="overflow-y: scroll; max-height:800px; width:100%; padding-bottom:300px;" >
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+<!--photos-->
+</div>
+		
+</body>
+</html>

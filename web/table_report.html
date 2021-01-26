@@ -1,0 +1,560 @@
+ <!--A Design by W3layouts 
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+<!DOCTYPE html>
+-->
+
+<html>
+<head>
+<title>Case Annotations</title>
+<!--css-->
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!--css-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Conjugal  Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--timer-->
+<link rel="stylesheet" href="css/jquery.countdown.css" />
+<!--timer-->
+<!--js-->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--js--> 
+<!--webfonts-->
+<link href='//fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!--webfonts-->
+<!--startsmothscrolling-->
+<script type="text/javascript" src="js/move-top.js"></script>
+<script type="text/javascript" src="js/easing.js"></script>
+ <script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){		
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+			});
+		});
+	</script>
+<!--endsmothscrolling-->
+
+<script type="text/javascript">
+
+$(function(){
+getWelMsg();
+getPageData('qry', '1');
+});
+
+function getWelMsg(){
+    var url = 'user/getSessionAttr';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{page_index:"pba_table"},
+		success: function fun(data){
+		    if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+			document.getElementById("top_menus").innerHTML = data['top_menu_html'];
+		    document.getElementById("welcome_msg").innerHTML = data['username'];
+		    document.getElementById("foot_msg").innerHTML = data['foot_msg'];
+		}
+		    
+	});
+}
+
+function logout(){
+    var url = 'user/logout';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{},
+		success: function fun(data){
+		    window.location.href = data['url'];
+		}
+		    
+	});
+}
+
+</script>
+
+
+<script type="text/javascript">
+
+Date.prototype.format = function(format)
+{
+ var o = {
+ "M+" : this.getMonth()+1, //month
+ "d+" : this.getDate(),    //day
+ "h+" : this.getHours(),   //hour
+ "m+" : this.getMinutes(), //minute
+ "s+" : this.getSeconds(), //second
+ "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+ "S" : this.getMilliseconds() //millisecond
+ }
+ if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
+ (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+ for(var k in o)if(new RegExp("("+ k +")").test(format))
+ format = format.replace(RegExp.$1,
+ RegExp.$1.length==1 ? o[k] :
+ ("00"+ o[k]).substr((""+ o[k]).length));
+ return format;
+}
+
+
+
+$(function(){
+//getWelMsg();
+var start_date = new Date(new Date()-24*60*60*1000).format("yyyyMMdd");
+var end_date = new Date().format("yyyyMMdd");
+var start_hour = 0;
+var end_hour = 0;
+var comp_days = 1;
+document.getElementById("text_start_date").value = start_date;
+document.getElementById("text_end_date").value = end_date;
+document.getElementById("text_start_hour").value = start_hour;
+document.getElementById("text_end_hour").value = end_hour;
+document.getElementById("text_comp_days").value = comp_days;
+//getGeneralMonitorData(start_date, end_date, start_hour, end_hour, comp_days, "qry")
+});
+
+
+
+function logout(){
+    var url = 'user/logout';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{},
+		success: function fun(data){
+		    window.location.href = data['url'];
+		}
+		    
+	});
+}
+
+
+
+function onGetMessage(html_str) 
+{
+    var container = document.getElementById("table_lab");
+    container.innerHTML = ""; 
+    
+	container.innerHTML += html_str;
+} 
+
+//getUnLabeledData
+function getGeneralMonitorData(start_date, end_date, start_hour, 
+                               end_hour, comp_days, obj, table, titles, colums, group_by, order_by, search_by, query)
+{
+    var url = 'data/getGeneralMonitorData';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{start_date:start_date+'', end_date:end_date+'', start_hour:start_hour+'' , end_hour:end_hour+'' , 
+		      comp_days:comp_days+'', qry_type:obj+'', table:table+'', titles:titles+'', colums:colums+'', group_by:group_by+'',
+		      order_by:order_by+'', search_by:search_by+'', query:query+'' },
+		success: function fun(data){
+		    //alert(data['ret']);
+			if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+			onGetMessage(data['html_str']);
+		}
+	});
+}
+
+function getPageData(obj, is_onselect){
+	onGetMessage("");
+    var start_date = document.getElementById("text_start_date").value;
+    var end_date = document.getElementById("text_end_date").value;
+    var start_hour = document.getElementById("text_start_hour").value;
+    var end_hour = document.getElementById("text_end_hour").value;
+    var comp_days = document.getElementById("text_comp_days").value;
+    var query = document.getElementById("search_by").value;
+    var obj = document.getElementById("table_name")
+    var index_sel = obj.selectedIndex
+    var table_name = obj.options[index_sel].value
+    var table = "wuxian_top_pic_pv2_consume";
+    //var colums = "channel,all_pv2,all_con,all_pic_pv2,all_pic_con,auto_pic_pv2,auto_pic_con,customer_pic_pv2,customer_pic_con,sp_pic_pv2,sp_pic_con";
+    //var titles = "类型,大盘PV2,all_con,all_pic_pv2,all_pic_con,auto_pic_pv2,auto_pic_con,customer_pic_pv2,customer_pic_con,sp_pic_pv2,sp_pic_con";
+    var colums = "channel@0,all_pv2@0,all_con@1,all_pv2+all_con@2,(all_pv2-all_con)/all_con@2"
+    var titles = "类型,大盘PV2,all_con,plus,rate"
+    var group_by = "channel";
+    var order_by = "channel desc"
+    var search_by = "channel"
+    var indexed_cols = "channel"
+    var indexed_cols_name = "类型"
+    //////////////////////////////////////////////////////////////////////////////
+    ////////                    自定义区域                                                                                          /////////////
+    if(table_name=="data_test_1"){
+        //表名称
+        table = "wuxian_top_pic_pv2_consume_classify";
+        //数据库列名称,与基本运算,@分割保留小数点位数（整数填写@0）,channel字段保持固定不变,数据项之间逗号分割
+        colums = "channel@0,customer_pv2@0,customer_pic_pv2@1,((customer_pv2-customer_pic_pv2)/customer_pv2)@2"
+        //用户侧展示列名,名称之间逗号分割
+        titles = "类型,大盘PV2,图片PV2,上限空间"
+        //排序方式
+        order_by = "customer_pic_pv2 desc"
+        //所有索引列
+        indexed_cols = "channel@"
+        indexed_cols_name = "类型"
+        
+    }
+    
+    if(table_name=="wuxian_top_pic_pv2_consume"){
+        //表名称
+        table = "wuxian_top_pic_pv2_consume";
+        //数据库列名称,与基本运算,@分割保留小数点位数（整数填写@0）,channel字段保持固定不变,数据项之间逗号分割
+		colums = "channel@0,all_pv2@0,all_pic_pv2@0,(all_pic_pv2/all_pv2*100)@2,auto_pic_pv2@0,(auto_pic_pv2/all_pv2*100)@2,customer_pic_pv2@0,(customer_pic_pv2/all_pv2*100)@2,sp_pic_pv2@0,(sp_pic_pv2/all_pv2*100)@2"
+        //用户侧展示列名,名称之间逗号分割
+        titles = "类型,大盘pv2,有图广告pv2,有图广告pv2占比(%),智能填图pv2,智能填图pv2占比(%),客户配图广告pv2,客户户配图广告pv2占比(%),特殊有图广告pv2,特殊有图广告pv2占比(%)"
+        //排序方式
+        order_by = "all_pic_pv2 desc"
+        //筛选索引列，数字类列不支持
+        indexed_cols = "channel@serve_type@phone_type"
+        indexed_cols_name = "类型@业务类型@手机类型"
+    }
+	if(table_name=="wuxian_top_pic_pv2_consume_classify"){
+        //表名称
+        table = "wuxian_top_pic_pv2_consume_classify";
+        //数据库列名称,与基本运算,@分割保留小数点位数（整数填写@0）,channel字段保持固定不变,数据项之间逗号分割
+		colums = "channel@0,customer_pv2@0,customer_pic_pv2@0,(customer_pic_pv2/customer_pv2*100)@2,customer_autopic_pv2@0,(customer_autopic_pv2/customer_pv2*100)@2,sp_pv2@0,sp_pic_pv2@0,(sp_pic_pv2/sp_pv2*100)@2,sp_autopic_pv2@0,(sp_autopic_pv2/sp_pv2*100)@2"
+        //用户侧展示列名,名称之间逗号分割
+        titles = "类别,客户广告pv2,客户广告有图pv2,客户广告有图pv2占比(%),客户广告智能填图pv2,客户广告智能填图pv2占比(%),特殊广告pv2,特殊广告有图pv2,特殊广告有图pv2占比(%),特殊广告智能填图pv2,特殊广告智能填图pv2占比(%)"
+        //排序方式
+        order_by = "customer_pic_pv2 desc"
+        //筛选索引列，数字类不支持
+        //筛选索引列，数字类列不支持
+        indexed_cols = "channel@serve_type@phone_type"
+        indexed_cols_name = "类型@业务类型@手机类型"
+    }
+    
+    if(table_name=="wuxian_top_pic_kpi_stat"){
+        //表名称
+        table = "wuxian_top_pic_pv2_consume_classify";
+        //数据库列名称,与基本运算,@分割保留小数点位数（整数填写@0）,channel字段保持固定不变,数据项之间逗号分割
+		colums = "channel@0,customer_pv2@0,customer_pic_pv2@0,(customer_pic_pv2/customer_pv2*100)@2,sp_pv2@0,sp_pic_pv2@0,(sp_pic_pv2/sp_pv2*100)@2,customer_pv2*100/(customer_pv2+sp_pv2)@2,sp_pv2*100/(customer_pv2+sp_pv2)@2,(customer_pic_pv2+sp_pic_pv2)*100/(customer_pv2+sp_pv2)@2"
+        //用户侧展示列名,名称之间逗号分割
+        titles = "类别,客户广告pv2,客户广告有图pv2,客户广告有图pv2占比(%),特殊广告pv2,特殊广告有图pv2,特殊广告有图pv2占比(%),普通广告pv2占比(%),特殊广告pv2占比(%), 整体配图率(%)"
+        //排序方式
+        order_by = "customer_pic_pv2 desc"
+        //筛选索引列，数字类不支持
+        //筛选索引列，数字类列不支持
+        indexed_cols = "channel@serve_type@phone_type"
+        indexed_cols_name = "类型@业务类型@手机类型"
+    }
+    
+	if(table_name=="wuxian_top_pic_pv2_consume_style"){
+        //表名称
+        table = "wuxian_top_pic_pv2_consume_style";
+        //数据库列名称,与基本运算,@分割保留小数点位数（整数填写@0）,channel字段保持固定不变,数据项之间逗号分割
+		colums = "channel@0,Math.abs(is_pic)/(is_pic+0.001)@0,Math.abs(is_auto)/(is_auto+0.001)@0,style_pv2@0,(style_con/100)@2,style_click@0,(style_click/style_pv2*100)@2,(style_con/100/style_click)@2"
+        //用户侧展示列名,名称之间逗号分割
+        titles = "类型,是否有图,是否自动填图,pv2,消耗,点击,点击率,单价(元)"
+        //排序方式
+        order_by = "style_pv2 desc"
+        //筛选索引列，数字类不支持
+        indexed_cols = "channel"
+        indexed_cols_name = "类型"
+    }
+    
+    
+    if(table_name=="data_pba"){
+        table = "mseach_sq_pba_kpi"
+        colums = "channel@0,pv_front@0,pv+pv_rec@0,pv/pv_front@2,cost_rec+cost@2,pv@0,adnum@0,adpv@0,clk@2,cost@2,100*clk/adpv@2,pv_rec@0,adnum_rec@0,adpv_rec@0,clk_rec@2,cost_rec@2,100*clk_rec/adpv_rec@2"
+        titles = "流量标签,前卡PV,详情PV,前卡点击率,详情消耗,搜索PV,搜索PV2,搜索PV3,搜索点击,搜索消耗,搜索CTR3(%),推荐PV,推荐PV2,推荐PV3,推荐点击,推荐消耗,推荐CTR3(%)"
+        search_by = "channel"
+        //筛选索引列，数字类不支持
+        indexed_cols = "channel"
+        indexed_cols_name = "流量标签"
+    }
+    
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //alert(start_date+", "+end_date+","+start_hour+", "+end_hour+","+comp_days);
+    if(is_onselect == 0){
+        var search_by = "";
+        num = 0;
+        $("input[name='filter_type']:checked").each(function(i){
+            num++;
+            if(num > 1){
+                search_by += "@"+$(this).val();
+            }else{
+                search_by = $(this).val()
+            }
+        });
+        
+        arr_filter = search_by.split("@");
+        arr_search = query.split("@");
+        if(arr_filter.length != arr_search.length){
+            alert("警告：过滤条件数量必须与过滤内容数相同\n过滤条件为:"+search_by+"\n过滤内容:"+query);
+            return;
+        }
+        getGeneralMonitorData(start_date, end_date, start_hour, end_hour, comp_days, obj, table, titles, colums, group_by, order_by, search_by, query);
+    }else{
+        var check_box_filter_html = "";
+        var arr = indexed_cols.split("@");
+        var arr_name = indexed_cols_name.split("@")
+        for(i=0; i<arr.length; i++){
+            if(i == 0){
+                check_box_filter_html += "<label><input name=\"filter_type\" type=\"checkbox\" checked=\"checked\" value=\""+arr[i]+"\"> "+arr_name[i]+"<label>"
+            }else{
+                check_box_filter_html += "<label><input name=\"filter_type\" type=\"checkbox\"  value=\""+arr[i]+"\"> "+arr_name[i]+"<label>"
+            }
+        }
+        var check_box_filter = document.getElementById("check_box_filter");
+        check_box_filter.innerHTML = check_box_filter_html;
+    }
+
+}
+
+function getNextDate(date,day) { 
+  var dd = new Date(date.substr(0, 4)+"/"+date.substr(4, 2)+"/"+date.substr(6, 2)+" 00:00:00");
+  dd = new Date(dd.getTime() + 24*60*60*1000*day);
+  var y = dd.getFullYear()+"";
+  var m = dd.getMonth() + 1 < 10 ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1+"";
+  var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate()+"";
+  return y  + m  + d;
+};
+
+function getNextHour(hour, d_hour){
+    new_hour = parseInt(hour) + d_hour
+    delta_day = Math.floor(new_hour/24)
+    delta_hour = (new_hour + 24 )%24
+    //alert(hour+"=="+delta_hour+"=="+d_hour)
+    var deltas = [delta_day, delta_hour]
+    return deltas
+}
+
+function getDate(flag){
+    if(flag=="last_day" || flag=="next_day"){
+        delta = -1
+        if(flag=="next_day"){
+            delta = -1 * delta
+        }
+        var d = getNextDate(document.getElementById("text_start_date").value, delta)
+        document.getElementById("text_start_date").value = d
+        var d = getNextDate(document.getElementById("text_end_date").value, delta)
+        document.getElementById("text_end_date").value = d
+    }
+    if(flag=="last_hour" || flag=="next_hour"){
+        delta = -1
+        if(flag=="next_hour"){
+            delta = -1 * delta
+        }
+        deltas = getNextHour(document.getElementById("text_start_hour").value, delta)
+        document.getElementById("text_start_hour").value = deltas[1]
+        var d = getNextDate(document.getElementById("text_start_date").value, deltas[0])
+        document.getElementById("text_start_date").value = d
+        
+        deltas = getNextHour(document.getElementById("text_end_hour").value, delta)
+        document.getElementById("text_end_hour").value = deltas[1]
+        var d = getNextDate(document.getElementById("text_end_date").value, deltas[0])
+        document.getElementById("text_end_date").value = d
+    }
+}
+
+
+
+
+</script>
+
+<script type="text/javascript">
+
+function doSave(value, type, name) {
+    var blob;
+    if (typeof window.Blob == "function") {
+        blob = new Blob([value], {type: type});
+    } else {
+        var BlobBuilder = window.BlobBuilder || window.MozBlobBuilder || window.WebKitBlobBuilder || window.MSBlobBuilder;
+        var bb = new BlobBuilder();
+        bb.append(value);
+        blob = bb.getBlob(type);
+    }
+    var URL = window.URL || window.webkitURL;
+    var bloburl = URL.createObjectURL(blob);
+    var anchor = document.createElement("a");
+    if ('download' in anchor) {
+        anchor.style.visibility = "hidden";
+        anchor.href = bloburl;
+        anchor.download = name;
+        document.body.appendChild(anchor);
+        var evt = document.createEvent("MouseEvents");
+        evt.initEvent("click", true, true);
+        anchor.dispatchEvent(evt);
+        document.body.removeChild(anchor);
+    }else if (navigator.msSaveBlob) {
+        navigator.msSaveBlob(blob, name);
+    } else {
+        location.href = bloburl;
+    }
+}
+
+function export_csv(){
+     var test = "\uFEFF";
+     var res = "";
+     var start_date = document.getElementById("text_start_date").value;
+     var end_date = document.getElementById("text_end_date").value;
+     var start_hour = document.getElementById("text_start_hour").value;
+     var end_hour = document.getElementById("text_end_hour").value;
+     var comp_days = document.getElementById("text_comp_days").value;
+     var query = document.getElementById("search_by").value;
+     var obj = document.getElementById("table_name")
+     var index_sel = obj.selectedIndex;
+     var table_name = obj.options[index_sel].innerText;
+     
+     var filename_base = table_name+"-"+start_date+""+start_hour+"-"+end_date+""+end_hour+"["+query+"]";
+     var tb = document.getElementById('table_lab');    
+     var rows = tb.rows;
+     for(var i = 0; i<rows.length; i++ ){
+         for(var j = 0; j<rows[i].cells.length; j++ ){   
+             if(j==rows[i].cells.length-1){
+                test+= rows[i].cells[j].innerText+"\n";
+             }else{
+			 	test+= rows[i].cells[j].innerText+",";
+			 }
+         }
+     }
+     doSave(test, "text/plain;charset=utf-8", filename_base+"ouput_stat.csv");
+ } 
+
+</script>
+
+</head>
+<body>
+	<div class="header" id="head">
+		<div class="container">
+			<div class="header-menu">
+				<nav class="navbar navbar-default">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+						  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						  </button>
+							<div class="navbar-brand logo">
+								<h1><a href="main.html">Case Annotations</a></h1>
+							</div>
+						</div>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav" id="top_menus">
+							<!-- 
+							<li class="active"><a href="#" onclick="getUnlabeledData();" data-hover="Home">去标注</a></li>
+								<li><a data-hover="Photos" href="labeled.html">已标注</a></li>
+								<li><a data-hover="Photos" href="utils.html">操作</a></li>
+							 -->
+								
+							</ul>
+						</div><!-- /.navbar-collapse -->
+					
+						
+					</div><!-- /.container-fluid -->
+					
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" id="welcome">
+						     <h4 style="color:white;">欢迎您&nbsp; &nbsp; &nbsp; <span id="welcome_msg">-</span> &nbsp; &nbsp; &nbsp;  <a onclick="logout();"><span class="anchorjs-icon">注销</span></a></h4>
+						</div>
+				</nav>
+			<div class="clearfix"></div>
+			</div>	
+		</div> 
+	</div>
+			<!--header-->		
+		<div class="page">
+			<div class="container" style="text-align:center">
+			<h3 class="tittle">RD 数据监测（测试版）</h3>
+			<br><br>
+			<!-- 
+				<div class="short-heading">
+					<h2 class="tittle">Case Annotations </h2>
+				</div>
+				
+				<div class="grid_3 grid_4">
+					<div class="page-header">
+			  </div>
+		  
+			 -->
+			 <label>开始日期</label>
+			 <input id="text_start_date" type="text" class="btn btn-1 btn-default" value="20190521" >
+			 <label>开始时间</label>
+			 <input id="text_start_hour" type="text" class="btn btn-1 btn-default" value="00" >
+			 <label>过滤条件</label>
+			 <input id="search_by" type="text" class="btn btn-1 btn-default" value=""  placeholder="@分割，与排序列同序">
+			 
+			 <br><br>
+			 <label>截止日期</label>
+			 <input id="text_end_date" type="text" class="btn btn-1 btn-default" value="20190522" >
+			 <label>截止时间</label>
+			 <input id="text_end_hour" type="text" class="btn btn-1 btn-default" value="00" >
+			 
+			 <label>对比天数</label>
+			 <input id="text_comp_days" type="text" class="btn btn-1 btn-default" value="0" >
+			
+			 
+			 
+              <div class="checkbox" id="check_box_filter">
+				
+			  </div>
+			 <!-- 
+			         自定义代码段
+			         class="form-control"
+			  -->
+			 <select id="table_name" name="table_name"  onchange="getPageData('qry', '1');" style="width:400px;"  >
+			     <option value="wuxian_top_pic_kpi_stat">图片覆盖率汇总KPI</option>
+			     <option value="wuxian_top_pic_pv2_consume" selected="selected">[luoyuan]图片总体监控</option>
+				 <option value="wuxian_top_pic_pv2_consume_classify" >[luoyuan]分客户广告-特殊广告类别监控</option>
+				 <option value="wuxian_top_pic_pv2_consume_style">[luoyuan]分样式监控</option>
+                 <option value="data_pba" >[hejiajin]华章分时监测(20191020已终止)</option>
+                 
+            </select>
+            <br><br>
+            <button id="btn_last_day" onclick="getDate('last_day');" type="button" class="btn btn-1 btn-info">上一天</button>
+			 <button id="btn_next_day" onclick="getDate('next_day');" type="button" class="btn btn-1 btn-info">下一天</button>
+			 
+			 <button id="btn_last_hour" onclick="getDate('last_hour');" type="button" class="btn btn-1 btn-info">前小时</button>
+			 <button id="btn_next_hour" onclick="getDate('next_hour');" type="button" class="btn btn-1 btn-info">后小时</button>
+			 
+			 <button id="btn_jump" onclick="getPageData('qry', '0');" type="button" class="btn btn-1 btn-info">数据查询</button>
+			 <button id="btn_export_csv" onclick="export_csv();" type="button" class="btn btn-1 btn-info">导出CSV</button>
+			 <br><br>
+			 <h5 class="tittle">注:过滤条件不同字段之间@分割, 指定字段不同条件#分割,&表示与, |表示或, ^表示否, 如_m#&^ms@30200, 过滤出类型包括_m且不包括ms中包含30200的数据</h5>
+			 <br>
+			 <!-- 
+			  <div class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 0px solid #eee">
+			  
+             <div class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="simple-table">
+                <table class="table" id="table_lab">
+				-->
+				<div class="table-responsive">
+				<table id="table_lab" class="table table-bordered table-striped animated wow fadeInUp" data-wow-duration="1000ms">
+				  <tbody id="table_lab_body">
+				  </tbody>
+				</table>
+			</div>
+			
+			 <br>
+		
+     
+		
+					
+			
+		</div>
+		<div class="col-sm-offset-0 col-sm-12" align=center>
+		<p id="foot_msg">copyright@2019 hejiajin@sogou-inc.com</p>
+	    </div>
+	</div>
+			
+</body>
+</html>

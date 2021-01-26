@@ -1,0 +1,118 @@
+<html><head><title>RELEVANCE TEST</title><!--css--><link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" /><!-- jQuery (necessary for Bootstrap's JavaScript plugins) --><link href="css/style.css" rel="stylesheet" type="text/css" media="all" /><!--css--><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="keywords" content="Conjugal  Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" /><script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script><!--timer--><link rel="stylesheet" href="css/jquery.countdown.css" />
+<!--timer--><!--js--><script src="js/jquery.min.js"></script><script src="js/bootstrap.min.js"></script><!--js--> <!--webfonts--><link href='//fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
+<link rel="import" href="top.html" id="top"/>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'><!--webfonts--><!--startsmothscrolling--><script type="text/javascript" src="js/move-top.js"></script><script type="text/javascript" src="js/easing.js"></script> <script type="text/javascript">		jQuery(document).ready(function($) {			$(".scroll").click(function(event){						event.preventDefault();				$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);			});		});
+</script><!--endsmothscrolling-->
+
+<script type="text/javascript">
+function tdmSugg(type)
+{
+    //document.getElementById("btn_search").innerHTML = "Searching..."
+    var qry = document.getElementById("query").value
+    var topk = document.getElementById("topk").value
+    if(type == "sample"){  qry = "@@@@@"; }
+    if(qry==""){
+        alert("输入不可为空");
+        return;
+    }
+    
+    var btn_search = document.getElementById("btn_search")
+    var btn_sample = document.getElementById("btn_sample")
+    btn_search.disabled = true
+    if(type == "sample"){btn_sample.innerHTML = "Sampling.."}
+    if(type == "search"){btn_search.innerHTML = "Searching.."}
+    var container = document.getElementById("table_lab_body")
+    container.innerHTML = ""
+    var styles = ["active", "danger", "warning", "success", "", "info"]
+    var trs = $("#table_lab_body").find("tr");
+    //alert(trs.length);
+    var url = 'data/tdmSugg';
+    $.ajax({
+		type: 'POST',
+		url: url,
+		data:{query:qry+'', beam_num:topk+''},
+		success: function fun(data){
+		    if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+			
+		    //document.getElementById("score").value = data['score']
+		    var htmlstr = "";
+		    for(var i = 0; i < data['kwds'].length; i++){
+		        htmlstr += "<tr class=\""+styles[((i+1)/2)%styles.length]+"\"><th>"+data['kwds'][i]['kwd']+"</th><th>"+data['kwds'][i]['score']+"</th><tr>"
+		    
+		    }
+		    container.innerHTML = htmlstr 
+		    btn_search.disabled = false
+		    if(type == "sample"){btn_sample.innerHTML = "Sample"}
+            if(type == "search"){btn_search.innerHTML = "Search"}
+		    if(data['ec'] == "201" && type == "sample"){ 
+		        document.getElementById("query").value = data['key'] ;
+		        container.innerHTML = ""
+		    }
+		    
+		    if(data['ec'] == "201" && type == "search"){ 
+			    if(confirm("查询词不存在， 是否随机采样? 本次采样查询词："+data['key'])){ 
+			         document.getElementById("query").value = data['key'] ; 
+			         container.innerHTML = ""
+			         //btn_search.disabled = false
+			         //tdmSugg(); 
+			    }else{
+			         return;
+			    }
+			}
+		    
+		}
+	});
+}
+
+
+  
+</script>
+
+
+</head>
+<body>	
+
+
+<div class="page">
+<div class="container">	  
+
+<!--Forms-->
+    <!-- 
+    <div class="short-heading"><h2 class="tittle"></h2></div>
+     -->
+    <div class="page-header" ><h3>TDM触发</h3></div>
+    <div class="bs-example animated wow fadeInRight" data-wow-duration="1000ms" data-example-id="simple-horizontal-form">
+        <div class="form-group">
+            <label for="txt_a" class="col-sm-2 control-label">QUERY</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="query" id="query" placeholder="">
+            </div>
+            <div class="col-sm-1">
+                <input type="text" class="form-control" name="topk" id="topk" value="300">
+            </div>
+         
+         <div class="col-sm-3" align=center>
+             <button id="btn_sample" type="button" class="btn btn-1 btn-success" onclick="tdmSugg('sample');">Sample</button>
+         
+             <button id="btn_search" type="button" class="btn btn-1 btn-success" onclick="tdmSugg('search');">Search</button>
+         </div>
+    </div>	
+</div>
+
+
+<div class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 0px solid #eee">
+
+<br/><br/><br/>
+	
+<table class="table" id="table_lab">
+    <thead><tr><th>KWDS</th><th>SCORE</th></tr></thead>
+    <tbody id="table_lab_body"><tr class="success"><th></th><th></th></tr></tbody>
+</table>
+
+
+</div></div>
+</div>
+</body></html>

@@ -1,0 +1,269 @@
+ <!--A Design by W3layouts 
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+<!DOCTYPE html>
+-->
+
+<html>
+<head>
+<title>Case Annotations</title>
+<!--css-->
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!--css-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Conjugal  Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--timer-->
+<link rel="stylesheet" href="css/jquery.countdown.css" />
+<link rel="stylesheet" href="css/fileinput.min.css" />
+<link rel="stylesheet" href="css/fileinput.css" />
+<!--timer-->
+<!--js-->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/fileinput.js"></script>
+<script src="js/fileinput.min.js"></script>
+<script src="js/locales/zh.js"></script>
+
+<!--js--> 
+<!--webfonts-->
+<link href='//fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!--webfonts-->
+<!--startsmothscrolling-->
+<script type="text/javascript" src="js/move-top.js"></script>
+<script type="text/javascript" src="js/easing.js"></script>
+ <script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){		
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+			});
+		});
+	</script>
+<!--endsmothscrolling-->
+
+
+<script type="text/javascript">
+
+$(function(){
+getWelMsg();
+});
+window.setInterval(function(){ 
+    getWelMsg();
+}, 1000*10);
+
+function getWelMsg(){
+    var url = 'user/getSessionAttr';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{page_index:"visual"},
+		success: function fun(data){
+		    if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+			document.getElementById("top_menus").innerHTML = data['top_menu_html'];
+		    document.getElementById("welcome_msg").innerHTML = data['username'];
+		    document.getElementById("foot_msg").innerHTML = data['foot_msg'];
+		}
+		    
+	});
+}
+
+function logout(){
+    var url = 'user/logout';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{},
+		success: function fun(data){
+		    window.location.href = data['url'];
+		}
+		    
+	});
+}
+
+function ui_item_visual(id){
+   var display = document.getElementById(id).style.display
+   if(display=="none"){
+       document.getElementById(id).style.display = "inline"
+   } else{
+       document.getElementById(id).style.display = "none"
+   }
+}
+function check_input_params(id){
+    var form = document.getElementById(id)
+    for (var i=0;i<form.elements.length;i++)
+    {
+        var ee=form.elements[i];
+        if("input"==ee.tagName||"select"==ee.tagName){
+            alert(ee.innerHTML) 
+        };
+    }
+}
+
+</script>
+
+
+
+
+</head>
+<body>
+
+
+	<div class="header" id="head">
+		<div class="container">
+			<div class="header-menu">
+				<nav class="navbar navbar-default">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+						  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						  </button>
+							<div class="navbar-brand logo">
+								<h1><a href="main.html">Case Annotations</a></h1>
+							</div>
+						</div>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav" id="top_menus">
+								<!-- 
+								<li><a href="main.html" onclick="getUnlabeledData();" data-hover="Home">去标注</a></li>
+								<li><a data-hover="Photos" href="labeled.html">已标注</a></li>
+								<li class="active"><a data-hover="Photos" href="utils.html">操作</a></li>
+								 -->
+							</ul>
+						</div><!-- /.navbar-collapse -->
+					</div><!-- /.container-fluid -->
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" id="welcome">
+						     <h4 style="color:white;">欢迎您&nbsp; &nbsp; &nbsp; <span id="welcome_msg">-</span> &nbsp; &nbsp; &nbsp;  <a onclick="logout();"><span class="anchorjs-icon">注销</span></a></h4>
+					</div>
+				</nav>
+			<div class="clearfix"></div>
+			</div>	
+		</div> 
+	</div>
+		<!--header-->		
+		<div class="page">
+			<div class="container">
+			
+			<div id="out_line" class="team-section" style="height:100%">
+				<div class="container">
+					<h3 class="tittle">OUTLINE</h3>
+					<div class="team-grids">
+						<div class="col-md-4 team-grid">
+							<div class="ih-item circle effect1"><a href="#img_sugg">
+								<div class="spinner"></div>
+								<div class="img"><img src="images/image_sugg.jpg" alt="img"></div>
+								<div class="info">
+								  <div class="info-back">
+									<h4>富媒体服务</h4>
+									<span>富媒体可视化</span>
+								  </div>
+								</div></a>
+							</div>
+							<p>富媒体可视化SYS</p>
+						</div>
+						
+						<div class="col-md-4 team-grid">
+							<div class="ih-item circle effect1"><a href="#tdm_sugg">
+								<div class="spinner"></div>
+									<div class="img"><img src="images/tdmtree.jpeg" alt="img"></div>
+								<div class="info">
+									<div class="info-back">
+										<h4>语义检索</h4>
+										<span>树模型</span>
+								  </div>
+								</div></a>
+							</div>
+							<p>TDM树模型触发</p>
+						</div>
+						
+						<div class="col-md-4 team-grid">
+							<div class="ih-item circle effect1"><a href="#bert_sugg">
+								<div class="spinner"></div>
+									<div class="img"><img src="images/bert.jpg" alt="img"></div>
+								<div class="info">
+									<div class="info-back">
+										<h4>文本匹配</h4>
+										<span>相关性计算</span>
+								  </div>
+								</div></a>
+							</div>
+							<p>BERT短文本相关性计算</p>
+						</div>
+						<!-- 
+						<div class="col-md-4 team-grid">
+							<div class="ih-item circle effect1"><a href="#labeling_upload">
+								<div class="spinner"></div>
+									<div class="img"><img src="images/big_data.jpeg" alt="img"></div>
+								<div class="info">
+									<div class="info-back">
+										<h4>数据标注</h4>
+										<span>文本数据</span>
+								  </div>
+								</div></a>
+							</div>
+							<p>1.在线标注相关性数据上传入口</p>
+						</div>
+						<div class="clearfix"></div>
+					     -->
+					</div>
+				</div>
+			</div>
+			
+			<!-- 图片服务iframe -->
+			
+			<div id="img_sugg" class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 1px solid #eee">
+				 <span><a href="#out_line">TOP&nbsp;</a></span>
+				 <iframe name="content_iframe" marginwidth=0 marginheight=0 width=100% height=150% src="images.html" frameborder=0 scrolling="no"></iframe> 
+			</div>
+			
+			
+			<br><br>
+			
+			
+			<!-- 业务点服务 -->
+			<div id="tdm_sugg" class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 1px solid #eee">
+				 <span><a href="#out_line">TOP&nbsp;</a></span>
+				 <iframe name="content_iframe" marginwidth=0 marginheight=0 width=100% height=100% src="svr_point_retriver.html" frameborder=0 scrolling="no"></iframe> 
+				 
+			</div>
+			<br><br>
+			
+			
+			<!-- 语义理解服务 -->
+			<div id="bert_sugg" class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 1px solid #eee">
+				 <span><a href="#out_line">TOP&nbsp;</a></span>
+				 <iframe name="content_iframe" marginwidth=0 marginheight=0 width=100% height=100% src="relevance_bert.html" frameborder=0 scrolling="no"></iframe> 
+				 
+			</div>
+			<br><br>
+			
+			
+			 <br>
+		
+     
+		
+					
+			
+		</div>
+		<div class="col-sm-offset-0 col-sm-12" align=center>
+		<p id="foot_msg">copyright@2019 hejiajin@sogou-inc.com</p>
+	    </div>
+	</div>
+			
+</body>
+</html>

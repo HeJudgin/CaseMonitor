@@ -1,0 +1,261 @@
+<!--A Design by W3layouts 
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+<!DOCTYPE html>
+-->
+
+<html>
+<head>
+<title>Case Annotations</title>
+<!--css-->
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!--css-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Conjugal  Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--timer-->
+<link rel="stylesheet" href="css/jquery.countdown.css" />
+<!--timer-->
+<!--js-->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--js--> 
+<!--webfonts-->
+<link href='//fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!--webfonts-->
+<!--startsmothscrolling-->
+<script type="text/javascript" src="js/move-top.js"></script>
+<script type="text/javascript" src="js/easing.js"></script> 
+ <script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){		
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+			});
+		});
+	</script>
+<!--endsmothscrolling-->
+
+<script type="text/javascript">
+
+function guest(){
+    document.getElementById("inp_username").value = "test";
+    document.getElementById("inp_repwd").value = "123";
+
+}
+
+
+//校验函数
+function validateLoginname(name, id){
+       /*
+    * 1. 用户名不能为空
+    */
+    //var id="inp_username";
+    var value=$("#"+id).val();
+    if(!value){
+        alert(name+"不能为空");
+        return false;
+    }
+    /*
+     * 2. 用户名长度不小于6位
+     */
+    if(value.length<4){
+        alert(name+"长度必须4到20之间");
+        return false;
+    }
+    /*
+     * 3. 用户名需包含数字和密码，不包含特殊字符
+     */
+    var re = new RegExp("[a-zA-Z]");//字母正则校验
+    var pasFlag = true;
+    var len = re.test(value);
+    if(!len) { //字母匹配不成功, return false
+        pasFlag = false;
+    }
+    re = new RegExp("[0-9]");//数字正则校验
+    if(!len) { //数字匹配不成功，return false
+        pasFlag = false;
+    }
+    re = new RegExp("((?=[\x21-\x7e]+)[^A-Za-z0-9])");//特殊字符
+    len=re.test(value);
+    if(len) {//特殊字符匹配成功，return false;
+        pasFlag = false;
+    }
+    if(!pasFlag){
+        alert(name+"必须含数字、字母不包含 特殊字符");
+        return false;
+    }
+    return true
+}
+
+
+function register(){
+    var url = 'user/register';
+    
+    isvisual = document.getElementById("reinp_pwd_div").style.display != "none";
+    //alert(isvisual);
+    if(!isvisual){
+        document.getElementById("reinp_pwd_lab").style.display="inline";
+        document.getElementById("reinp_pwd_div").style.display="inline";
+        return;
+    }
+    var username = document.getElementById("inp_username").value;
+    var pwd = document.getElementById("inp_pwd").value;
+    var repwd = document.getElementById("inp_repwd").value;
+    if(pwd != repwd || pwd == "" || username == ""){
+        alert("帐户名密码不可为空, 且密码需一致!");
+        return;
+    }
+    if(!validateLoginname("用户名", "inp_username")){
+        return;
+    }
+    
+    if(!validateLoginname("密码", "inp_pwd")){
+        return;
+    }
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{username:username+'', pwd:pwd+''},
+		success: function fun(data){
+			if(data['status'] == "success"){
+			    document.getElementById("inp_username").value = username;
+			    document.getElementById("inp_pwd").value = pwd;
+			    document.getElementById("inp_repwd").value = "";
+			    document.getElementById("reinp_pwd_lab").style.display="none";
+                document.getElementById("reinp_pwd_div").style.display="none";          
+			}else{
+			    document.getElementById("inp_username").value = "";
+			    document.getElementById("inp_pwd").value = "";
+			    document.getElementById("inp_repwd").value = "";
+			    alert(data['msg']);
+			}
+		}
+	});
+}
+
+function check_input_params(id){
+    var form = document.getElementById(id)
+    for (var i=0;i<form.elements.length;i++)
+    {
+        var ee=form.elements[i];
+        if("inp_lab_tag"==ee.id){
+            if(ee.value == ""){
+                var r=confirm("未输入标记，将使用默认标注数据进行标注，如自定义标注内容请重新键入标记字符, 是否登录?");
+                
+                return r;
+            }
+        };
+    }
+    return true;
+}
+
+function lostPwd(){
+    alert("密码可联系管理员进行重置!@2019 hejiajin@sogou-inc.com");
+}
+</script>
+</head>
+<body>
+	<div class="header" id="head">
+		<div class="container">
+			<div class="header-menu">
+				<nav class="navbar navbar-default">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+						  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						  </button>
+							<div class="navbar-brand logo">
+								<h1><a href="main.html">Case Annotations</a></h1>
+							</div>
+						</div>
+						<!-- Collect the nav links, forms, and other content for toggling
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav">
+								<li><a href="#" data-hover="Home">Home </a></li>
+								<li><a data-hover="Photos" href="photos.html">Photos</a></li>
+							</ul>
+						</div><!-- /.navbar-collapse -->
+						
+					</div><!-- /.container-fluid -->
+					 
+				</nav>
+			<div class="clearfix"></div>
+			</div>	
+		</div> 
+	</div>
+		<!--header-->		
+		<div class="content">
+		<div class="page">
+			<div class="container">
+				<div class="short-heading">
+					<h2 class="tittle">Data Annotations </h2>
+				</div>
+				<!--button-->
+				<div class="grid_3 grid_4">
+					<div class="page-header">
+			  </div>
+			<!--Forms-->
+			<div class="page-header">
+				<h3>LOGIN</h3>
+			</div>
+				<div class="bs-example animated wow fadeInRight" data-wow-duration="1000ms" data-example-id="simple-horizontal-form">
+					<form id="form_login" class="form-horizontal" action="user/login" method="post" onsubmit="return check_input_params('form_login');">
+					  <div class="form-group">
+					    <label for="username" class="col-sm-2 control-label">USERNAME</label>
+						<div class="col-sm-10">
+						  <input type="text" class="form-control" name="username" id="inp_username" placeholder="hjj">
+						  <label for="login-error" class="col-sm-2 control-label"></label>
+						</div>
+						<label for="password" class="col-sm-2 control-label">PASSWORD</label>
+						<div class="col-sm-10">
+						  <input type="password" class="form-control" name="pwd" id="inp_pwd" placeholder="pwd"> 
+						  
+						</div>
+						
+						<label for="password" class="col-sm-2 control-label" id = "reinp_pwd_lab" style="display:none">REPASSWORD</label>
+						<div class="col-sm-10"  style="display:none" id = "reinp_pwd_div">
+						  <input type="password" class="form-control" name="repwd" id="inp_repwd" placeholder="repwd" >
+						</div>
+						
+						<label for="lab_tag" class="col-sm-2 control-label" id = "lab_tag_lab" >LABEL TAG</label>
+						<div class="col-sm-10"  id = "inp_lab_tag_div">
+						  <input type="text" class="form-control" name="lab_tag" id="inp_lab_tag" value="user" placeholder="标识当前标注的批次编号,空白将使用默认标注数据" >
+						</div>
+					  </div>
+					  <div class="form-group">
+						<div class="col-sm-offset-0 col-sm-12" align=center>
+						  
+						  <button type="button" onclick="register();" class="btn btn-1 btn-success">REGIST</button>
+						  <button type="submit" class="btn btn-1 btn-success" >LOGIN</button>
+						  <button type="button" onclick="guest();" class="btn btn-1 btn-success">GUEST</button>
+						  <a href="#" onclick="lostPwd();" >FORGET</a>
+						</div>
+					  </div>
+					</form>
+				</div>
+			
+			<!--forms-->
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-sm-offset-0 col-sm-12" align=center>
+		<p id="foot_msg">copyright@2019 hejiajin@sogou-inc.com</p>
+	</div>
+
+		
+</body>
+</html>

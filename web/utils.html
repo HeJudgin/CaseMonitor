@@ -1,0 +1,440 @@
+ <!--A Design by W3layouts 
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+<!DOCTYPE html>
+-->
+
+<html>
+<head>
+<title>Case Annotations</title>
+<!--css-->
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!--css-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Conjugal  Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--timer-->
+<link rel="stylesheet" href="css/jquery.countdown.css" />
+<link rel="stylesheet" href="css/fileinput.min.css" />
+<link rel="stylesheet" href="css/fileinput.css" />
+<!--timer-->
+<!--js-->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/fileinput.js"></script>
+<script src="js/fileinput.min.js"></script>
+<script src="js/locales/zh.js"></script>
+
+<!--js--> 
+<!--webfonts-->
+<link href='//fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!--webfonts-->
+<!--startsmothscrolling-->
+<script type="text/javascript" src="js/move-top.js"></script>
+<script type="text/javascript" src="js/easing.js"></script>
+ <script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){		
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+			});
+		});
+	</script>
+<!--endsmothscrolling-->
+
+
+<script type="text/javascript">
+
+$(function(){
+getWelMsg();
+});
+window.setInterval(function(){ 
+    getWelMsg();
+}, 1000*10);
+
+function getWelMsg(){
+    var url = 'user/getSessionAttr';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{page_index:"utils"},
+		success: function fun(data){
+		    if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+			document.getElementById("top_menus").innerHTML = data['top_menu_html'];
+		    document.getElementById("welcome_msg").innerHTML = data['username'];
+		    document.getElementById("foot_msg").innerHTML = data['foot_msg'];
+		}
+		    
+	});
+}
+
+function logout(){
+    var url = 'user/logout';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{},
+		success: function fun(data){
+		    window.location.href = data['url'];
+		}
+		    
+	});
+}
+
+
+function getImgid(){
+    var url = 'data/getImgidByName';
+    document.getElementById("inp_imgids").value = ""
+    var qry = document.getElementById("inp_imgname").value
+    var type = document.getElementById("inp_search_type").value 
+    if(qry == ""){return}
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{name:qry+"\1"+type},
+		success: function fun(data){
+		    if(data['ret'] == '-1'){
+			    window.location.href = data['url'];
+			    return;
+			}
+			if(data['ids'] == ""){
+			    alert("未检索到相关信息~请验证~")
+			}
+			document.getElementById("inp_imgids").value = data['ids']
+			if(data['ids'].indexOf("sogoucdn") != -1){
+			    url = data['ids'].split(")(")[1].replace(")", "");
+			    document.getElementById("img_imgids").src = url
+			    document.getElementById("img_imgids").style.display = "inline"
+			}else{
+			    document.getElementById("img_imgids").style.display = "none"
+			}
+			
+		}
+		    
+	});
+}
+
+
+function ui_item_visual(id){
+   var display = document.getElementById(id).style.display
+   if(display=="none"){
+       document.getElementById(id).style.display = "inline"
+   } else{
+       document.getElementById(id).style.display = "none"
+   }
+}
+function check_input_params(id){
+    
+    var form = document.getElementById(id)
+    for (var i=0;i<form.elements.length;i++)
+    {
+        var ee=form.elements[i];
+        //alert(ee.tagName)
+        if("input"==ee.tagName.toLowerCase()||"select"==ee.tagName.toLowerCase()){
+            //alert(ee.value);
+            if(ee.value == ""){
+                alert(ee.tagName+" 不可为空！");
+                return false;
+            }
+        };
+    }
+    return true;
+}
+
+</script>
+
+
+
+
+</head>
+<body>
+
+
+	<div class="header" id="head">
+		<div class="container">
+			<div class="header-menu">
+				<nav class="navbar navbar-default">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+						  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						  </button>
+							<div class="navbar-brand logo">
+								<h1><a href="main.html">Case Annotations</a></h1>
+							</div>
+						</div>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav" id="top_menus">
+								<!-- 
+								<li><a href="main.html" onclick="getUnlabeledData();" data-hover="Home">去标注</a></li>
+								<li><a data-hover="Photos" href="labeled.html">已标注</a></li>
+								<li class="active"><a data-hover="Photos" href="utils.html">操作</a></li>
+								 -->
+							</ul>
+						</div><!-- /.navbar-collapse -->
+					</div><!-- /.container-fluid -->
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" id="welcome">
+						     <h4 style="color:white;">欢迎您&nbsp; &nbsp; &nbsp; <span id="welcome_msg">-</span> &nbsp; &nbsp; &nbsp;  <a onclick="logout();"><span class="anchorjs-icon">注销</span></a></h4>
+					</div>
+				</nav>
+			<div class="clearfix"></div>
+			</div>	
+		</div> 
+	</div>
+		<!--header-->		
+		<div class="page">
+			<div class="container">
+			
+			<!-- 
+			<div id="out_line" class="team-section" style="height:100%">
+				<div class="container">
+					<h3 class="tittle">OUTLINE</h3>
+					<div class="team-grids">
+						<div class="col-md-4 team-grid">
+							<div class="ih-item circle effect1"><a href="#img_sugg">
+								<div class="spinner"></div>
+								<div class="img"><img src="images/image_sugg.jpg" alt="img"></div>
+								<div class="info">
+								  <div class="info-back">
+									<h4>图片服务</h4>
+									<span>广告配图展示</span>
+								  </div>
+								</div></a>
+							</div>
+							<p>广告配图相关case定位</p>
+						</div>
+						<div class="col-md-4 team-grid">
+							<div class="ih-item circle effect1"><a href="#bert_sugg">
+								<div class="spinner"></div>
+									<div class="img"><img src="images/bert.jpg" alt="img"></div>
+								<div class="info">
+									<div class="info-back">
+										<h4>文本匹配</h4>
+										<span>相关性计算</span>
+								  </div>
+								</div></a>
+							</div>
+							<p>基于BERT短文本相关性计算</p>
+						</div>
+						<div class="col-md-4 team-grid">
+							<div class="ih-item circle effect1"><a href="#labeling_upload">
+								<div class="spinner"></div>
+									<div class="img"><img src="images/big_data.jpeg" alt="img"></div>
+								<div class="info">
+									<div class="info-back">
+										<h4>数据标注</h4>
+										<span>文本数据</span>
+								  </div>
+								</div></a>
+							</div>
+							<p>1.在线标注相关性数据上传入口</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+			 -->
+			<!-- 图片服务iframe  -->
+			<!--
+			<div id="img_sugg" class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 1px solid #eee">
+				 <span><a href="#out_line">TOP&nbsp;</a></span>
+				 <iframe name="content_iframe" marginwidth=0 marginheight=0 width=100% height=100% src="images.html" frameborder=0 scrolling="no"></iframe> 
+			</div>
+			
+			
+			<br><br>
+			-->
+			
+			
+			<!-- 语义理解服务 -->
+			<!--
+			<div id="bert_sugg" class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 1px solid #eee">
+				 <span><a href="#out_line">TOP&nbsp;</a></span>
+				 <iframe name="content_iframe" marginwidth=0 marginheight=0 width=100% height=100% src="relevance_bert.html" frameborder=0 scrolling="no"></iframe> 
+				 
+			</div>
+			<br><br>
+			-->
+			<!-- 标注文件上传 -->
+			 <!-- 
+             <div class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="simple-table">
+              --> 
+              <span><a href="#out_line">TOP&nbsp;</a></span>
+             <div id="labeling_upload" class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 1px solid #eee">
+				 
+				 <div class="short-heading">
+				     <div class="col-sm-offset-0 col-sm-12" align=center>
+					     <h4 style=" margin:10px " >case上传(query, title, qry分词, title分词, "\t" 分割, 分词格式如下) </h4>
+					     <img alt="" src="images/text_format.jpg" style="width:90%; margin:10px">
+					     <button type="button" style="display: none" class="btn btn-1 btn-success" onclick="ui_item_visual('form_cut_file')">切词</button>
+					     <br><br>
+					     <form style="display: none" id="form_cut_file" class="form-horizontal" action="data/file_case_upload" method="post" enctype="multipart/form-data">
+					      <div class="form-group" style="display: none">
+					           <label for="inp_sogou_userid" class="col-sm-2 control-label" id = "sogou_userid" >收件人(*必填)</label>
+						       <div class="col-sm-10"  id = "inp_lab_tag_div">
+						          <input type="text" class="form-control" name="lab_tag" id="inp_sogou_userid" placeholder="abc@sogou-inc.com" >
+						       </div>
+					      </div>
+					     
+					      <div class="form-group">
+					         
+						    <div class="col-sm-12">
+					            <input id="f_upload" name="f_upload" type="file" class="file" data-show-upload="false"  data-show-preview="false" data-allowed-file-extensions='["txt","dat"]' />
+						    </div>
+					     </div>
+					     <div class="form-group">
+						    <div class="col-sm-offset-0 col-sm-12" align=center>
+						      <button type="submit" class="btn btn-1 btn-success" onsubmit="check_input_params('form_cut_file');">提交分词文件</button>
+						    </div>
+					      </div>
+					    </form>
+					     
+					 </div>
+					<br>
+					<form class="form-horizontal" action="data/label_case_upload" method="post" enctype="multipart/form-data">
+					  <div class="form-group">
+						<div class="col-sm-12">
+					         <input id="f_upload" name="f_upload" type="file" class="file" data-show-upload="false"  data-show-preview="true" data-allowed-file-extensions='["txt","dat"]' />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-0 col-sm-12" align=center>
+						  <button type="submit" class="btn btn-1 btn-success" >提交</button>
+						</div>
+					  </div>
+					</form>
+					
+				</div>
+				 
+				 
+			</div>
+			 <br><br>
+			 
+			<span><a href="#out_line">TOP&nbsp;</a></span>
+			 
+			 <div id="labeling_upload" class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 3px solid #eee">
+				 <div class="short-heading">
+				     <div class="col-sm-offset-0 col-sm-12" align=center>
+					     <h4 style=" margin:10px " >快捷标注相关性CASE上传(query, title, imgs(可选), "@" 分割) </h4>
+					     <form class="form-horizontal" action="data/local_label_upload" method="post" enctype="multipart/form-data" id="form_local_labeling" onsubmit="return check_input_params('form_local_labeling');">
+					         <div class="form-group">
+					           <label for="inp_labels" class="col-sm-2 control-label" id = "lab_labels" >标注结果(*必填)</label>
+						       <div class="col-sm-10"  id = "inp_lab_tag_div">
+						          <input type="text" class="form-control" name="inp_labels" id="inp_labels"  value="good@bad" placeholder="good@bad" >
+						       </div>
+						       <br><br>
+						       <label for="inp_num" class="col-sm-2 control-label" id = "lab_num" >标注批号(选填)</label>
+						       <div class="col-sm-10"  id = "inp_lab_tag_div">
+						          <input type="text" class="form-control" name="inp_num" id="inp_num"  value="cases" placeholder="" >
+						       </div>
+						       <br>
+						       <br>
+						       <label for="inp_sep" class="col-sm-2 control-label" id = "lab_sep" >指定分隔符</label>
+						       <div class="col-sm-10"  id = "inp_lab_tag_div">
+						          <input type="text" class="form-control" name="inp_sep" id="inp_sep"  value="@" placeholder="" >
+						       </div>
+						       <br>
+						       <br>
+						       <label for="inp_head" class="col-sm-2 control-label" id = "lab_head" >指定列名（@分割）</label>
+						       <div class="col-sm-10"  id = "inp_lab_tag_div">
+						          <input type="text" class="form-control" name="inp_head" id="inp_head"  value="query:txt:20@kwd:txt:20@配图:img:40" placeholder="" >
+						       </div>
+						       <br>
+						       <br>
+						       <label for="inp_title" class="col-sm-2 control-label" id = "lab_title" >指定标题</label>
+						       <div class="col-sm-10"  id = "inp_lab_tag_div">
+						          <input type="text" class="form-control" name="inp_title" id="inp_title"  value="广告case相关性快速标注" placeholder="" >
+						       </div>
+						       <br>
+						       <br>
+						        <div class="col-sm-12">
+					             <input id="f_upload" name="f_upload" type="file" class="file" data-show-upload="false"  data-show-preview="true" data-allowed-file-extensions='["txt","csv"]' />
+						        </div>
+					         </div>
+					         <div class="form-group">
+						        <div class="col-sm-offset-0 col-sm-12" align=center>
+						          <button type="submit" class="btn btn-1 btn-success" >提交</button>
+						          <i class="icon-search"></i>
+						        </div>
+					         </div>
+					    </form>
+					
+				     </div>
+			    </div>
+			</div> 
+			
+			 <br>
+			 
+			 <span><a href="#out_line">TOP&nbsp;</a></span>
+			 <div id="img_id_search" class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 3px solid #eee">
+				 
+				 <div class="short-heading">
+				     <div class="col-sm-offset-0 col-sm-12" align=center>
+					     <h4 style=" margin:10px " >IMG & SUBLINK MSG SEARCH</h4>
+					     <div class="form-group">
+					           <label for="inp_labels" class="col-sm-2 control-label" id = "lab_labels" >查询内容</label>
+						       <div class="col-sm-10"  id = "inp_img_search_div">
+						          <input type="text" class="form-control" name="inp_imgname" id="inp_imgname"  value="" placeholder="图片名称&图片ID&子链ID" >
+						          <select id="inp_search_type" name="inp_search_type" class="form-control">
+                                    <option selected="selected" value="9">图片</option>
+                                    <option value="37">子链</option>
+                                  </select>
+                                  <br>
+						       </div>
+						       
+						       <br><br>
+					         <div class="form-group">
+						        <div class="col-sm-offset-0 col-sm-12" align=center>
+						          <button type="button" class="btn btn-1 btn-success" onclick="getImgid();" >提交</button>
+						          <i class="icon-search"></i>
+						        </div>
+					         </div>
+						       <br><br><br><br>
+						       <label for="inp_num" class="col-sm-2 control-label" id = "lab_num" >查询结果</label>
+						       <div class="col-sm-10"  id = "inp_img_search_div">
+						           <div class="col-sm-10"  id = "inp_img_search_div">
+						              <textarea class="col-sm-9"  class="form-control"   rows="5"   style="OVERFLOW:  hidden" name="inp_imgids" id="inp_imgids" ></textarea>
+						              <img style="display: none" class="col-sm-3" alt="" src="" name="img_imgids" id="img_imgids">
+						           </div>
+						          <!-- <input type="text" style="height:80px" class="form-control" name="inp_imgids" id="inp_imgids"  value="" placeholder=""  > -->
+						       </div>
+						       <br>
+						       
+					         </div>
+					         
+					   </div>
+				     </div>
+			    </div>
+			</div> 
+			
+			 <br>
+			 
+			 
+		
+     
+		</div>
+					
+			
+		</div>
+		<div class="col-sm-offset-0 col-sm-12" align=center>
+		<p id="foot_msg">copyright@2019 hejiajin@sogou-inc.com</p>
+	    </div>
+	</div>
+			
+</body>
+</html>
