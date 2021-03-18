@@ -379,6 +379,44 @@ function check_input_params(id){
 			</div> 
 			
 			 <br>
+				<span><a href="#out_line">TOP&nbsp;</a></span>
+				<div id="labeling_img_upload" class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 3px solid #eee">
+					<div class="short-heading">
+						<div class="col-sm-offset-0 col-sm-12" align=center>
+							<h4 style=" margin:10px " >图像语义标注 </h4>
+							<form class="form-horizontal" action="data/local_image_label_upload" method="post" enctype="multipart/form-data" id="form_local_image_labeling" onsubmit="return check_input_params('form_local_image_labeling');">
+								<div class="form-group">
+
+									<label for="inp_num" class="col-sm-2 control-label" id = "lab_num" >标注批号(选填)</label>
+									<div class="col-sm-10"  id = "inp_lab_tag_div">
+										<input type="text" class="form-control" name="inp_num" id="inp_num"  value="cases" placeholder="" >
+									</div>
+									<br>
+									<br>
+									<label for="inp_sep" class="col-sm-2 control-label" id = "lab_sep" >指定分隔符</label>
+									<div class="col-sm-10"  id = "inp_lab_tag_div">
+										<input type="text" class="form-control" name="inp_sep" id="inp_sep"  value="@" placeholder="" >
+									</div>
+									<br>
+									<br>
+									<div class="col-sm-12">
+										<input id="f_upload" name="f_upload" type="file" class="file" data-show-upload="false"  data-show-preview="true" data-allowed-file-extensions='["txt","csv"]' />
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-offset-0 col-sm-12" align=center>
+										<button type="submit" class="btn btn-1 btn-success" >提交</button>
+										<i class="icon-search"></i>
+									</div>
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+
+				<br>
+
 			 
 			 <span><a href="#out_line">TOP&nbsp;</a></span>
 			 <div id="img_id_search" class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 3px solid #eee">

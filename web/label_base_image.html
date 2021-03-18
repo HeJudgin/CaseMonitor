@@ -1,0 +1,300 @@
+ <!--A Design by W3layouts 
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+<!DOCTYPE html>
+-->
+<html>
+<head>
+<meta name="referrer" content="no-referrer" /><!--页面头部添加-->
+<title>ADRW IMAGE SERVER</title>
+<!--css-->
+<link href="../css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="../css/swipebox.css" type="text/css" media="all">
+<!--css-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="IMAGES" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--timer-->
+<link rel="stylesheet" href="../css/jquery.countdown.css" />
+<!--timer-->
+<!--js-->
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<!--js-->
+<!--webfonts-->
+<link href='//fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!--webfonts-->
+<!-- swipe box js -->
+<script src="../js/jquery.swipebox.min.js"></script> 
+	<script type="text/javascript">
+		jQuery(function($) {
+			$(".swipebox").swipebox();
+		});
+</script>
+<!-- //swipe box js -->
+<!--startsmothscrolling-->
+<script type="text/javascript" src="../js/move-top.js"></script>
+<script type="text/javascript" src="../js/easing.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+	});
+});
+</script>
+<script type="text/javascript">
+function HashMap(){  
+    //定义长度  
+    var length = 0;  
+    //创建一个对象  
+    var obj = new Object();  
+  
+    /** 
+    * 判断Map是否为空 
+    */  
+    this.isEmpty = function(){  
+        return length == 0;  
+    };  
+  
+    /** 
+    * 判断对象中是否包含给定Key 
+    */  
+    this.containsKey=function(key){  
+        return (key in obj);  
+    };  
+  
+    /** 
+    * 判断对象中是否包含给定的Value 
+    */  
+    this.containsValue=function(value){  
+        for(var key in obj){  
+            if(obj[key] == value){  
+                return true;  
+            }  
+        }  
+        return false;  
+    };  
+  
+    /** 
+    *向map中添加数据 
+    */  
+    this.put=function(key,value){  
+        if(!this.containsKey(key)){  
+            length++;  
+        }  
+        obj[key] = value;  
+    };  
+  
+    /** 
+    * 根据给定的Key获得Value 
+    */  
+    this.get=function(key){  
+        return this.containsKey(key)?obj[key]:null;  
+    };  
+  
+    /** 
+    * 根据给定的Key删除一个值 
+    */  
+    this.remove=function(key){  
+        if(this.containsKey(key)&&(delete obj[key])){  
+            length--;  
+        }  
+    };  
+  
+    /** 
+    * 获得Map中的所有Value 
+    */  
+    this.values=function(){  
+        var _values= new Array();  
+        for(var key in obj){  
+            _values.push(obj[key]);  
+        }  
+        return _values;  
+    };  
+  
+    /** 
+    * 获得Map中的所有Key 
+    */  
+    this.keySet=function(){  
+        var _keys = new Array();  
+        for(var key in obj){  
+            _keys.push(key);  
+        }  
+        return _keys;  
+    };  
+  
+    /** 
+    * 获得Map的长度 
+    */  
+    this.size = function(){  
+        return length;  
+    };  
+  
+    /** 
+    * 清空Map 
+    */  
+    this.clear = function(){  
+        length = 0;  
+        obj = new Object();  
+    };  
+}
+</script>
+
+
+<script type="text/javascript">
+
+
+
+        function doSave(value, type, name) {
+            var blob;
+            if (typeof window.Blob == "function") {
+                blob = new Blob([value], {type: type});
+            } else {
+                var BlobBuilder = window.BlobBuilder || window.MozBlobBuilder || window.WebKitBlobBuilder || window.MSBlobBuilder;
+                var bb = new BlobBuilder();
+                bb.append(value);
+                blob = bb.getBlob(type);
+            }
+            var URL = window.URL || window.webkitURL;
+            var bloburl = URL.createObjectURL(blob);
+            var anchor = document.createElement("a");
+            if ('download' in anchor) {
+                anchor.style.visibility = "hidden";
+                anchor.href = bloburl;
+                anchor.download = name;
+                document.body.appendChild(anchor);
+                var evt = document.createEvent("MouseEvents");
+                evt.initEvent("click", true, true);
+                anchor.dispatchEvent(evt);
+                document.body.removeChild(anchor);
+            } else if (navigator.msSaveBlob) {
+                navigator.msSaveBlob(blob, name);
+            } else {
+                location.href = bloburl;
+            }
+        }
+
+function jump_focus(obj_id){
+    var label = document.getElementById(obj_id); 
+    label.focus()
+    //label.checked = true
+}
+/**
+function add_new_word(row_id) {
+	var rowElm = document.getElementById("trid_" + row_id + "_2");
+	var new_word = document.getElementById("search_key_" + row_id).value;
+	var name = 'keys_' + row_id
+	rowElm.innerHTML = rowElm.innerHTML +
+			"<label><input name='"+name+"' type='checkbox' value='"+new_word+"' checked='checked' />"+new_word+"</label>"
+}
+ */
+
+function add_new_word(row_id, new_word) {
+	var rowElm = document.getElementById("trid_" + row_id + "_2");
+	var name = 'keys_' + row_id
+	rowElm.innerHTML = rowElm.innerHTML +
+			"<label><input name='"+name+"' type='checkbox' value='"+new_word+"' checked='checked' />"+new_word+"</label>"
+}
+
+function search_new_word(row_id) {
+	var rowElm = document.getElementById("trid_" + row_id + "_3");
+	var rowElm = document.getElementById("search_list_" + row_id);
+	var new_word = document.getElementById("search_key_" + row_id).value;
+	var max_num = document.getElementById("search_num_" + row_id).value;
+	rowElm.innerHTML = ""
+	var html = "";
+    //kwdSugg
+	var url = '../data/kwdSugg';
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data:{query:new_word+'', max_num:max_num+''},
+		success: function fun(data){
+			//alert(data['score']);
+			//alert(data['res'])
+			if(data['res'] != ""){
+				var conds = data['res'].split('@@@');
+				//alert(conds.length)
+				conds[0] = new_word;
+				for(var i = 0; i < conds.length; i++){
+					var tmp = conds[i];
+					html += "<a onclick=\"add_new_word("+ row_id +", '"+ tmp +"')\">"+ tmp +"</a> &nbsp;&nbsp;"
+				}
+				rowElm.innerHTML = html;
+			}
+		}
+	});
+	/**
+	for(var i = 1; i < 5; i++){
+		var tmp = new_word + "-" + i
+		html += "<a onclick=\"add_new_word("+ row_id +", '"+ tmp +"')\">"+ tmp +"</a> &nbsp;&nbsp;"
+	}
+	 */
+
+}
+
+        
+ function click_button(){
+     var test = "";
+     var res = "";
+     var tb = document.getElementById('tab');    
+     var rows = tb.rows;
+     var row_length = tb.getElementsByTagName("tr").length
+     //alert("rows:"+row_length)
+     var map = new HashMap(); 
+     elem_focus = null
+     total_num = 0
+     for(var i = 1; i<row_length; i++ ){
+		 if(rows[i].cells[1].getElementsByTagName("img").length > 0){
+			 test+= rows[i].cells[1].getElementsByTagName("img")[0].getAttribute("src")+"@";
+		 }
+		 var elms = document.getElementsByName("keys_"+i);
+		 var chk_var = "";
+		 for(var k = 0; k < elms.length; k++){
+			 if(elms[k].checked == true){
+				 if(chk_var==""){
+					 chk_var += elms[k].value
+				 }else {
+					 chk_var += ";" + elms[k].value
+				 }
+
+			 }
+		 }
+		 if(chk_var == ""){
+			 if(elem_focus == null){
+				 elem_focus = elms[0]
+			 }
+
+		 }else{
+			 total_num += 1
+		 }
+		 test+=chk_var+"\n"
+     }
+	 //alert("good case num:"+good_num+", rate:"+parseFloat(good_num/(rows.length-1)));
+     if(rows.length-1 != total_num){
+         if(confirm("total:"+(rows.length-1) + " labeled:"+ total_num + ", submit with some cases missed ?")){
+             doSave(test, "text/latex", "ouput_labeld.txt");
+         }else{
+             elem_focus.focus()
+         }
+     }else{
+         doSave(test, "text/latex", "ouput_labeld.txt");
+     }
+     
+ }       
+</script>
+</head>
+
+
+
+
+
+    
+
+

@@ -118,6 +118,34 @@ public class FileService {
 		}
         
     }
+
+    public void write2html(String filein, String des_path, String inp_seq){
+        List<String> datas = readFileForLines(Constant.HOME_URL+"/label_base_image.html");
+        List<String> lines = new ArrayList<>();
+        lines = readFileForLines(filein);
+        //lines.add("https://goss3.cfp.cn/creative/vcg/800/new/VCG41N936817458.jpg@青年人@慢跑@派克大街@公园@树林");
+        String inp_title = "Image Caption tools";
+
+        String html = "";
+        List<String> htmls = StringUtils.getInstance().getLocalImageLabeledHtml(lines, inp_title, inp_seq);
+        try {
+            //д����Ӧ���ļ�
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(des_path),"UTF8"));
+            for(String l : datas){
+                out.append(l.trim()+"\n");
+            }
+            for(String l : htmls){
+                out.append(l.trim()+"\n");
+            }
+
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
     
     
 }

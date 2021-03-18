@@ -6,7 +6,7 @@ public class Constant{
 	
 	
 	
-	public static final String REDIRECT_URL="/HY1.0/login.html";
+	public static final String REDIRECT_URL="/login.html";
 	
 	//public static final String CASE_FILE_PATH="D:\\file_test\\";
 	//public static final String CASE_FILE_PATH="/Users/jiajinhe/Downloads/";

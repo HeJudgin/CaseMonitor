@@ -104,7 +104,7 @@ public class DataController extends Controller{
         System.out.println(tag+","+userid+","+fileName);
         FileService fs = new FileService();    
         fileName = Constant.CASE_FILE_PATH+userid+"_local_labled";
-        String des_path_tail = File.separator+"labels"+File.separator+userid+"_label_"
+        String des_path_tail = "labels"+File.separator+userid+"_label_"
                 +new SimpleDateFormat("yyyyMMdd").format(new Date()).toString()+"_"+inp_num+".html";
         String des_path = Constant.CASE_FILE_PATH + des_path_tail; //Constant.HOME_URL+des_path_tail;
         File t=new File(fileName);
@@ -138,6 +138,52 @@ public class DataController extends Controller{
         this.setAttr("url", Constant.HOME_URL.substring(Constant.HOME_URL.lastIndexOf(File.separator.toCharArray()[0]))+File.separator+des_path_tail);
         this.render("/alert.jsp");
 	}
+
+	//get Image caption data
+	//@Before(Tx.class)
+	@Clear(myIntercepter.class)
+	public void local_image_label_upload(){
+		UploadFile uploadFile=this.getFile("f_upload");
+		String inp_num = getPara("inp_num");
+		String inp_sep = getPara("inp_sep");
+		File file=uploadFile.getFile();
+		String userid = getSessionAttr("username");
+		String tag = this.getSessionAttr("lab_tag") == null ? "label" : this.getSessionAttr("lab_tag").toString();  //getPara("tag");
+		String des_path_tail = "labels"+File.separator+userid+"_label_"
+				+new SimpleDateFormat("yyyyMMdd").format(new Date()).toString()+"_"+inp_num+".html";
+		String des_path = Constant.CASE_FILE_PATH + des_path_tail; //Constant.HOME_URL+des_path_tail;
+		String fileName = Constant.CASE_FILE_PATH+userid+"_local_labled";
+		FileService fs = new FileService();
+		File t=new File(fileName);
+		try {
+			t.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		fs.fileChannelCopy(file, t);
+		file.delete();
+		System.out.println(des_path);
+		fs.write2html(fileName, des_path, inp_sep);
+		List<String> lines = fs.readFileForLines(fileName);
+		HashMap<String, Object>  map = new HashMap<String, Object>();
+		String info = "";
+		try{
+			map.put("url", des_path);
+			map.put("inp_rows", lines.size());
+			map.put("status", "SUCCESS");
+		}catch (Exception e) {
+			// TODO: handle exception
+			map.put("inp_rows", lines.size());
+			map.put("status", "FAILD!!!!!!");
+		}
+		info = "STATUS:"+map.get("status")+", Input Rows:"+map.get("inp_rows")+", 点击返回";
+		this.setAttr("msg", info);
+		this.setAttr("url", Constant.HOME_URL.substring(Constant.HOME_URL.lastIndexOf(File.separator.toCharArray()[0]))+File.separator+des_path_tail);
+		this.render("/alert.jsp");
+	}
+
+
 	
 	public void file_case_upload(){
         UploadFile uploadFile=this.getFile("f_upload");
@@ -457,6 +503,25 @@ public class DataController extends Controller{
 		map.put("kwds", tdmRespModel.getKwds());
 		System.out.println(map.toString());
 		this.renderJson(tdmRespModel);
+	}
+
+    @Clear(myIntercepter.class)
+	public void kwdSugg(){
+		String query = getPara("query");
+		String max_num = getPara("max_num");
+		String ret = "query";
+		//String url = "http://10.135.33.106:8080/solr/collection1/select?q="+query+"%3A1688&wt=json&indent=true";
+		try {
+			query = URLEncoder.encode(query, "utf8");
+			String url = "http://10.135.33.106:8080/solr/collection1/select?q=query%3A"+query+"&fl=query&rows="+max_num+"&wt=csv&indent=true";
+			ret = HttpKit.get(url);
+		}catch (Exception e){
+			e.printStackTrace();
+
+		}
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("res", ret.trim().replace("\"", "").replaceAll("\n", "@@@"));
+		this.renderJson(map);
 	}
 	
 	//获取图片服务数据

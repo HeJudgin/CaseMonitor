@@ -271,13 +271,19 @@ public class StringUtils {
 		if("2410243587".equals(ckid)){  label_base += "(特殊广告)"; }
 		HashMap<String, String> matTYPE = new HashMap<String, String>();
 		matTYPE.put("7", "短子链组");matTYPE.put("9", "单图");matTYPE.put("11", "短子链");matTYPE.put("37", "长子链");
-		matTYPE.put("8", "长子链组");matTYPE.put("5", "大图");matTYPE.put("18", "多图");matTYPE.put("19", "皇冠列表");matTYPE.put("20", "皇冠通用词");
+		matTYPE.put("8", "长子链组");matTYPE.put("5", "大图");matTYPE.put("18", "多图");matTYPE.put("19", "皇冠列表");
+		matTYPE.put("20", "皇冠通用词");matTYPE.put("52", "图集");matTYPE.put("53", "视频");
 		String label = "";
 		String last_mat_type = "";
 		for(int i = 0; i < tags.length; i++){
 			if(!last_mat_type.equals(mattypes[i])){
 				last_mat_type = mattypes[i];
-				label = label_base + "【" + matTYPE.get(last_mat_type) + "】";
+				if(matTYPE.get(last_mat_type) != null) {
+					label = label_base + "【" + matTYPE.get(last_mat_type) + "】";
+				}else{
+					label = label_base + "【" + last_mat_type + "】";
+				}
+
 				label = "<button lab=\"title\" style=\"fontSize:15px\"  type=\"button\" class=\"btn btn-1 btn-info\">"+label+"</button>";
 				html_str += "<div class=\"clearfix\"></div><div style=\"boder:3px\"></div><hr style=\" height:2px;border:none;border-top:2px dotted #185598;\" />"
 						+ label+"<hr style=\" height:2px;border:none;border-top:2px dotted #185598;\" />"; 
@@ -561,6 +567,43 @@ public class StringUtils {
 		
 		htmls.add("</table></div><br><br><button class=\"btn btn-lg btn-default\" type=\"button\" value=\"write\"  onclick=\"click_button()\" style=\"width:99%\"> SUBMIT</button><br><br></html>");
 		//System.out.println(htmls);
+		return htmls;
+	}
+
+
+	public List<String> getLocalImageLabeledHtml(List<String> datas, String inp_title, String inp_seq){
+		List<String> htmls = new ArrayList<>();
+		String html_head = "<h3 class=\"tittle\">"+inp_title+"</h3>"
+				+"<div class=\"table-responsive\"  style=\"width:99%; height:90%; overflow-y:auto; border: 1px solid #eee\" >"
+				+ "<table class=\"table table-bordered table-striped animated wow fadeInUp \" "
+				+ "id=\"tab\" style=\"display: table; table-layout:fixed; word-wrap: break-word; \" >" +
+				"<thead><th width=\"5%%\">Idx</th><th width=\"25%%\">图片</th><th width=\"40%%\">候选词</th><th width=\"40%%\">补充词</th>";
+
+    	htmls.add(html_head);
+    	for(int i = 0; i < datas.size(); i++){
+    		String html = "";
+			html+=String.format("<tr id=\"%d\"><th height=\"30%%\" width=\"10%%\">%d</th>", i+1, i+1);
+			String items[] = datas.get(i).split(inp_seq);
+			String col = "<th id = \"trid_%d_%d\" height=\"40%%\" width=\"%d%%\">%s</th>";
+			String choice_items = "";
+			for(int j = 0; j < items.length; j++){
+            	if(j == 0) {
+					html += String.format("<th height=\"40%%\" width=\"%d%%\"><img  id=\"img_%d_%d\" src=\"%s\" style=\"width:%dpx; height:%dpx; padding:10px\" /></th>", 20, i + 1, 0, items[0], 220, 220);
+				}else{
+					choice_items += String.format("<label><input name=\"keys_%d\" type=\"checkbox\" value=\"%s\" />%s</label>",
+							i + 1, items[j], items[j]);
+				}
+			}
+			String search_items = String.format("<p><input id=\"search_key_%d\" type=\"text\" name=\"fname\" />" +
+					"<input id=\"search_num_%d\" type=\"text\" size='2' name=\"fname\" value='20' />" +
+					"<button type=\"button\" onclick=\"search_new_word(%d)\">search</button></p>" +
+					"<p id=\"search_list_%d\"></p></tr>", i + 1, i + 1, i + 1, i + 1);
+			html += String.format(col, i + 1, 2, 40, choice_items);
+			html += String.format(col, i + 1, 3, 40, search_items);
+			htmls.add(html);
+		}
+		htmls.add("</table></div><br><br><button class=\"btn btn-lg btn-default\" type=\"button\" value=\"write\"  onclick=\"click_button()\" style=\"width:99%\"> SUBMIT</button><br><br></html>");
+
 		return htmls;
 	}
 	
