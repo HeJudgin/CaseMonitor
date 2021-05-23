@@ -508,7 +508,7 @@ public class DataController extends Controller{
 		String topk = getPara("topk");
 		String url = "";
 		try {
-			url = "http://10.140.113.29:20205//generate?title="+
+			url = "http://10.140.113.29:20205/generate?title="+
 					URLEncoder.encode(title, "utf-8")+
 					"&kwd=" + URLEncoder.encode(title, "utf-8")+
 					"&beam_num=" + beam_num +
