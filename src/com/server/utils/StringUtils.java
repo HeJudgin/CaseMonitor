@@ -515,10 +515,12 @@ public class StringUtils {
 		}
 		html_head += "<th width=\"20%%\">Labels</th></thead>";
 		htmls.add(html_head);
+		int row = 0;
 		for(int i = 0 ;i < datas.size(); i++){
 			String html = "";
 			String items[] = datas.get(i).split(lab_sep);
-			if(items.length >= 2){
+			if(items.length == heads.length){
+				row++;
 			    int width = 200;
 		        //if(items.length > 3){
 		    	//    width =  800 / (items.length-2);
@@ -530,8 +532,8 @@ public class StringUtils {
 		        }
 		        */
 		        String radios = "";
-		        String id_jump = String.format("jump_focus('rad_%d_0')", i+2);
-		        if( i == datas.size() - 1){ id_jump = String.format("jump_focus('rad_%d_0')", i+1); }
+		        String id_jump = String.format("jump_focus('rad_%d_0')", row + 1);
+		        if( i == datas.size() - 1){ id_jump = String.format("jump_focus('rad_%d_0')", row); }
 		        for(int j = 0; j < labs.length; j++){
 		        	String stars = labs[j]+"&nbsp;&nbsp;";
 		        	for(int k=j; k<labs.length; k++){
@@ -539,9 +541,9 @@ public class StringUtils {
 		        	}
 		        	
 		        	radios+=String.format("<p><label><input id=\"rad_%d_%d\" name=\"rad_%d\" type=\"radio\" value=\"%s\" onclick=\"%s\" /> %s</label></p>",
-		        			i+1, j, i+1, labs[j], id_jump, stars);
+		        			row, j, row, labs[j], id_jump, stars);
 		        }
-		        html+=String.format("<tr id=\"%d\"><th height=\"30%%\" width=\"10%%\">%d</th>", i+1, i+1);
+		        html+=String.format("<tr id=\"%d\"><th height=\"30%%\" width=\"10%%\">%d</th>", row, row);
 		        for(int j = 0; j < heads.length && j < items.length; j++){
 		        	String head = heads[j].split(":")[0];
 		        	String type = heads[j].split(":")[1];
@@ -552,7 +554,7 @@ public class StringUtils {
 		        	if("txt".equals(type)){
 		        		html += String.format("<th height=\"30%%\" width=\"%d%%\">%s</th>", size, items[j]);
 		        	}else if("img".equals(type)){
-			    	    html += String.format("<th height=\"30%%\" width=\"%d%%\"><img  id=\"img_%d_%d\" src=\"%s\" style=\"width:%d%%; height:%dpx; padding:10px\" /></th>", size, i+1, j, items[j], 80, 150);
+			    	    html += String.format("<th height=\"30%%\" width=\"%d%%\"><img  id=\"img_%d_%d\" src=\"%s\" style=\"width:%d%%; height:%dpx; padding:10px\" /></th>", size, row, j, items[j], 80, 150);
 			    	    //html += String.format("<th width=\"50px\"><img  id=\"img_%d_%d\" src=\"%s\" style=\"width:%dpx; height:%dpx; padding:10px\" /></th>", i+1, j, items[j], width, width);
 		        	}
 		        }
@@ -580,6 +582,7 @@ public class StringUtils {
 				"<thead><th width=\"5%%\">Idx</th><th width=\"25%%\">图片</th><th width=\"40%%\">候选词</th><th width=\"40%%\">补充词</th>";
 
     	htmls.add(html_head);
+    	//int row = 0;
     	for(int i = 0; i < datas.size(); i++){
     		String html = "";
 			html+=String.format("<tr id=\"%d\"><th height=\"30%%\" width=\"10%%\">%d</th>", i+1, i+1);
