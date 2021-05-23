@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import com.server.model.*;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -34,13 +35,6 @@ import com.jfinal.upload.UploadFile;
 import com.server.constant.Constant;
 import com.server.dao.MyDao;
 import com.server.filter.myIntercepter;
-import com.server.model.DataModel;
-import com.server.model.ImgModel;
-import com.server.model.LabHisModel;
-import com.server.model.SampleModel;
-import com.server.model.SimModel;
-import com.server.model.TdmModel;
-import com.server.model.TdmRespModel;
 import com.server.utils.FileService;
 import com.server.utils.SortByLengthComparator;
 import com.server.utils.StringUtils;
@@ -503,6 +497,36 @@ public class DataController extends Controller{
 		map.put("kwds", tdmRespModel.getKwds());
 		System.out.println(map.toString());
 		this.renderJson(tdmRespModel);
+	}
+
+	@Clear(myIntercepter.class)
+	public void unilmSugg(){
+		//http://10.141.168.42:20191/txt_sim?txt_a=&txt_b=&type=cos
+		String title = getPara("title");
+		String kwd = getPara("kwd");
+		String beam_num = getPara("beam_num");
+		String topk = getPara("topk");
+		String url = "";
+		try {
+			url = "http://10.140.113.29:20205//generate?title="+
+					URLEncoder.encode(title, "utf-8")+
+					"&kwd=" + URLEncoder.encode(title, "utf-8")+
+					"&beam_num=" + beam_num +
+			        "&topk=" + topk;
+			//url = URLEncoder.encode(url, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(url);
+		String ret = HttpKit.get(url);  //(url, null, "?txt_a=开心&txt_b=快乐&type=cos");
+		logger.info("ret:"+ret);
+		//ret = "{pairs: \"a VS b\", score: \"0.9790672\"}";
+		UnilmRespModel unilmRespModel = gson.fromJson(ret, UnilmRespModel.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("titles", unilmRespModel.getTitles());
+		System.out.println(map.toString());
+		this.renderJson(unilmRespModel);
 	}
 
     @Clear(myIntercepter.class)
