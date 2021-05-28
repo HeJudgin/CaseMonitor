@@ -1,0 +1,239 @@
+<html><head><title>RELEVANCE TEST</title><!--css--><link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" /><!-- jQuery (necessary for Bootstrap's JavaScript plugins) --><link href="css/style.css" rel="stylesheet" type="text/css" media="all" /><!--css--><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="keywords" content="Conjugal  Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" /><script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script><!--timer--><link rel="stylesheet" href="css/jquery.countdown.css" />
+    <!--timer--><!--js--><script src="js/jquery.min.js"></script><script src="js/bootstrap.min.js"></script><!--js--> <!--webfonts--><link href='//fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
+    <link rel="import" href="top.html" id="top"/>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'><!--webfonts--><!--startsmothscrolling--><script type="text/javascript" src="js/move-top.js"></script><script type="text/javascript" src="js/easing.js"></script> <script type="text/javascript">		jQuery(document).ready(function($) {			$(".scroll").click(function(event){						event.preventDefault();				$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);			});		});
+    </script><!--endsmothscrolling-->
+
+    <script type="text/javascript">
+
+        function send(){
+            var url = "http://10.140.113.29:20205/generate?title=%E5%9B%BD%E5%BA%86%E6%97%85%E6%B8%B8%E5%A5%BD%E5%8E%BB%E5%A4%84&kwd=%E4%B9%9D%E5%AF%A8%E6%B2%9F&beam_num=50&topk=30&show_num=30&resp_type=0"
+            var httpRequest = new XMLHttpRequest();//第一步：建立所需的对象
+            httpRequest.open('GET', url, true);//第二步：打开连接  将请求参数写在url中  ps:"./Ptest.php?name=test&nameone=testone"
+            httpRequest.send();//第三步：发送请求  将请求参数写在URL中
+            /**
+             * 获取数据后的处理程序
+             */
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    var json = httpRequest.responseText;//获取到json字符串，还需解析
+                    alert(json);
+                }
+            };
+
+        }
+
+        function updModel(){
+            document.getElementById("btn_updmod").disabled = true;
+            var url = "http://10.140.113.29:20205/updmodel?"
+            var httpRequest = new XMLHttpRequest();//第一步：建立所需的对象
+            httpRequest.overrideMimeType("application/json");
+            httpRequest.open('GET', url, true);//第二步：打开连接  将请求参数写在url中  ps:"./Ptest.php?name=test&nameone=testone"
+            httpRequest.send();//第三步：发送请求  将请求参数写在URL中
+            httpRequest.onerror=function(error){
+                console.log(error);
+                send_msg(error.toString())
+                document.getElementById("btn_updmod").disabled = false;
+            };
+            httpRequest.ontimeout=function(error){
+                console.log("timeout",error);
+                send_msg(error.toString())
+                document.getElementById("btn_updmod").disabled = false;
+            };
+            /**
+             * 获取数据后的处理程序
+             */
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    //var json = httpRequest.responseText;//获取到json字符串，还需解析
+                    var data = JSON.parse(httpRequest.responseText);
+                    document.getElementById("show_msg").innerText = "Model Info:" + data.msg
+                }else{
+                    send_msg(httpRequest.status)
+                }
+                document.getElementById("btn_updmod").disabled = false;
+            };
+
+
+        }
+
+
+
+        function send_msg(msg) {
+            var htmlstr = "";
+            msg = httpRequest.status
+            htmlstr += "<tr class=\"danger\"><th>Error</th><th>"+msg+"</th><tr>"
+            container.innerHTML = htmlstr
+            document.getElementById("btn_generate").disabled = false;
+        }
+
+        function unilmSugg(r_type)
+        {
+            //document.getElementById("btn_search").innerHTML = "Searching..."
+            if(r_type == "reset"){
+                document.getElementById("btn_generate").disabled = false;
+                return;
+            }else{
+                document.getElementById("btn_generate").disabled = true;
+            }
+            document.getElementById("show_msg").innerText = ""
+            var title = document.getElementById("title").value
+            var kwd = document.getElementById("kwd").value
+            var beam_num = document.getElementById("beam_num").value
+            var topk = document.getElementById("topk").value
+            var show_num = document.getElementById("show_num").value
+            var resp_type = "";
+            $("input[name='resp_type']:checked").each(function(i){
+                resp_type += $(this).val()+",";
+            });
+            if(title=="" || kwd == "" || resp_type == ""){
+                alert("输入不可为空");
+                document.getElementById("btn_generate").disabled = false;
+                return;
+            }
+            var container = document.getElementById("table_lab_body")
+            container.innerHTML = ""
+            var styles = ["active", "danger", "warning", "success", "", "info"]
+            var trs = $("#table_lab_body").find("tr");
+            //alert(trs.length);
+
+            /**
+            var url = 'data/unilmSugg';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data:{title:title+'', kwd:kwd+'', beam_num: beam_num+'', topk:topk+'',
+                    show_num:show_num+'', resp_type:resp_type+''},
+                success: function fun(data){
+                    if(data['ret'] == '-1'){
+                        window.location.href = data['url'];
+                        return;
+                    }
+                    //document.getElementById("score").value = data['score']
+                    var htmlstr = "";
+                    for(var i = 0; i < data['titles'].length; i++){
+                        htmlstr += "<tr class=\""+styles[i%styles.length]+"\"><th>"+data['titles'][i]['style']+"</th><th>"+data['titles'][i]['title']+"</th><tr>"
+                    }
+                    container.innerHTML = htmlstr
+                    document.getElementById("btn_generate").disabled = false;
+                }
+            });
+             */
+            //var url = "http://10.140.113.29:20205/generate?title=%E5%9B%BD%E5%BA%86%E6%97%85%E6%B8%B8%E5%A5%BD%E5%8E%BB%E5%A4%84&kwd=%E4%B9%9D%E5%AF%A8%E6%B2%9F&beam_num=50&topk=30&show_num=30&resp_type=0"
+            var url = "http://10.140.113.29:20205/generate?"
+            url += "title="+encodeURI(title) + "&"
+            url += "kwd="+encodeURI(kwd) + "&"
+            url += "beam_num=" + beam_num + "&"
+            url += "show_num=" + show_num + "&"
+            url += "topk=" + topk + "&"
+            url += "resp_type=" + resp_type
+            var httpRequest = new XMLHttpRequest();//第一步：建立所需的对象
+            httpRequest.overrideMimeType("application/json");
+            httpRequest.open('GET', url, true);//第二步：打开连接  将请求参数写在url中  ps:"./Ptest.php?name=test&nameone=testone"
+            httpRequest.send();//第三步：发送请求  将请求参数写在URL中
+            httpRequest.onerror=function(error){
+                console.log(error);
+                send_msg(error.toString())
+            };
+            httpRequest.ontimeout=function(error){
+                console.log("timeout",error);
+                send_msg(error.toString())
+            };
+            /**
+             * 获取数据后的处理程序
+             */
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    //var json = httpRequest.responseText;//获取到json字符串，还需解析
+                    var data = JSON.parse(httpRequest.responseText);
+                    //alert(json);
+                    var htmlstr = "";
+                    document.getElementById("show_msg").innerText = "Model Info:" + data.last_modify_time
+                    for(var i = 0; i < data.titles.length; i++){
+                        var item = data.titles[i]
+                        htmlstr += "<tr class=\""+styles[i%styles.length]+"\"><th>"+item.style+"</th><th>"+item.title+"</th><tr>"
+                    }
+                    container.innerHTML = htmlstr
+                    document.getElementById("btn_generate").disabled = false;
+                }else{
+                    send_msg(httpRequest.status)
+                }
+            };
+        }
+
+
+
+    </script>
+
+
+</head>
+<body>
+
+
+<div class="page">
+    <div class="container">
+
+        <!--Forms-->
+        <!--
+        <div class="short-heading"><h2 class="tittle"></h2></div>
+         -->
+        <div class="page-header" ><h3>标题生成</h3></div>
+        <div class="bs-example animated wow fadeInRight" data-wow-duration="1000ms" data-example-id="simple-horizontal-form">
+            <div class="form-group" align="center">
+                <label for="title" class="col-sm-2 control-label">TITLE</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="title" id="title" placeholder="">
+                </div>
+                <br><br>
+                <label for="KWD" class="col-sm-2 control-label">KWD</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="kwd" id="kwd" placeholder="">
+                </div>
+                <br><br><br><br>
+                <div class="col-sm-7" align="center">
+                    <label for="topk" class="col-sm-2 control-label">TOPK</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="topk" id="topk" value="30">
+                    </div>
+                    <label for="beam_num" class="col-sm-2 control-label">BEAM_NUM</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="beam_num" id="beam_num" value="50">
+                    </div>
+                    <label for="show_num" class="col-sm-2 control-label">SHOW_NUM</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="beam_num" id="show_num" value="30">
+                    </div>
+                </div>
+                <label>
+                    <input name="resp_type" type="checkbox" checked="checked" value="0"> 商业
+                </label>
+                <label>
+                    <input name="resp_type" type="checkbox" value="1"> 自然
+                </label>
+                <button id="btn_generate" type="button" class="btn btn-1 btn-success" onclick="unilmSugg('sugg');">Generate</button>
+                <button id="btn_reset" type="button" class="btn btn-1 btn-success" onclick="unilmSugg('reset');">Reset</button>
+                <button id="btn_updmod" type="button" class="btn btn-1 btn-success" onclick="updModel();">Update</button>
+                <br><br>
+                <label class="col-sm-16 control-label" id="show_msg" title="msg"></label>
+            </div>
+
+        </div>
+
+
+        <div class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table"
+             style="border: 0px solid #eee; overflow-x: auto; overflow-y: auto; height: 400px; ">
+
+
+
+            <table class="table" id="table_lab">
+                <thead><tr><th >Style</th><th>Title</th></tr></thead>
+                <tbody id="table_lab_body"><tr class="success">
+                    <th>0</th><th>-</th></tr>
+
+                </tbody>
+            </table>
+
+
+        </div></div>
+</div>
+</body></html>

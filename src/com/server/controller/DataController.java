@@ -506,27 +506,41 @@ public class DataController extends Controller{
 		String kwd = getPara("kwd");
 		String beam_num = getPara("beam_num");
 		String topk = getPara("topk");
+		String show_num = getPara("show_num");
+		String resp_type = getPara("resp_type");
 		String url = "";
 		try {
 			url = "http://10.140.113.29:20205/generate?title="+
 					URLEncoder.encode(title, "utf-8")+
 					"&kwd=" + URLEncoder.encode(kwd, "utf-8")+
 					"&beam_num=" + beam_num +
-			        "&topk=" + topk;
+			        "&topk=" + topk +
+			        "&show_num=" + show_num +
+			        "&resp_type=" + resp_type;
 			//url = URLEncoder.encode(url, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(url);
-		String ret = HttpKit.get(url);  //(url, null, "?txt_a=开心&txt_b=快乐&type=cos");
-		logger.info("ret:"+ret);
-		//ret = "{pairs: \"a VS b\", score: \"0.9790672\"}";
-		UnilmRespModel unilmRespModel = gson.fromJson(ret, UnilmRespModel.class);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("titles", unilmRespModel.getTitles());
-		System.out.println(map.toString());
-		this.renderJson(unilmRespModel);
+		try{
+			String ret = HttpKit.get(url);  //(url, null, "?txt_a=开心&txt_b=快乐&type=cos");
+			logger.info("ret:"+ret);
+			//ret = "{pairs: \"a VS b\", score: \"0.9790672\"}";
+			UnilmRespModel unilmRespModel = gson.fromJson(ret, UnilmRespModel.class);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("titles", unilmRespModel.getTitles());
+			System.out.println(map.toString());
+			this.renderJson(unilmRespModel);
+		}catch (Exception e){
+			List<UnilmModel> list = new ArrayList<>();
+			UnilmModel unilmModel = new UnilmModel("Error", e.getMessage());
+			list.add(unilmModel);
+			UnilmRespModel unilmRespModel = new UnilmRespModel("0", url, list);
+			this.renderJson(unilmRespModel);
+		}
+
+
 	}
 
     @Clear(myIntercepter.class)
