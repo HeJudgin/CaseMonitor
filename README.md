@@ -12,7 +12,7 @@
 ![avatar](media/preview_images/labeled-bert.png)
 #### BERT计算文本匹配度
 ![avatar](media/preview_images/bert.jpg)
-#### 文本短句
+#### 文本分句
 ![avatar](media/preview_images/ner_seg.jpg)
 #### 品牌词识别
 ![avatar](media/preview_images/ner_brand.jpg)
