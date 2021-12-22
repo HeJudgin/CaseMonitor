@@ -1,0 +1,169 @@
+<html><head><title>RELEVANCE TEST</title><!--css--><link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" /><!-- jQuery (necessary for Bootstrap's JavaScript plugins) --><link href="css/style.css" rel="stylesheet" type="text/css" media="all" /><!--css--><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="keywords" content="Conjugal  Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" /><script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script><!--timer--><link rel="stylesheet" href="css/jquery.countdown.css" />
+    <!--timer--><!--js--><script src="js/jquery.min.js"></script><script src="js/bootstrap.min.js"></script><!--js--> <!--webfonts--><link href='//fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
+    <link rel="import" href="top.html" id="top"/>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'><!--webfonts--><!--startsmothscrolling--><script type="text/javascript" src="js/move-top.js"></script><script type="text/javascript" src="js/easing.js"></script> <script type="text/javascript">		jQuery(document).ready(function($) {			$(".scroll").click(function(event){						event.preventDefault();				$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);			});		});
+    </script><!--endsmothscrolling-->
+
+    <script type="text/javascript">
+
+        function updModel(){
+            document.getElementById("btn_updmod").disabled = true;
+            var url = "http://10.135.33.106:33333/brand?"
+            var httpRequest = new XMLHttpRequest();//第一步：建立所需的对象
+            httpRequest.overrideMimeType("application/json");
+            httpRequest.open('GET', url, true);//第二步：打开连接  将请求参数写在url中  ps:"./Ptest.php?name=test&nameone=testone"
+            httpRequest.send();//第三步：发送请求  将请求参数写在URL中
+            httpRequest.onerror=function(error){
+                console.log(error);
+                send_msg(error.toString())
+                document.getElementById("btn_updmod").disabled = false;
+            };
+            httpRequest.ontimeout=function(error){
+                console.log("timeout",error);
+                send_msg(error.toString())
+                document.getElementById("btn_updmod").disabled = false;
+            };
+            /**
+             * 获取数据后的处理程序
+             */
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    //var json = httpRequest.responseText;//获取到json字符串，还需解析
+                    var data = JSON.parse(httpRequest.responseText);
+                    document.getElementById("show_msg").innerText = "Model Info:" + data.msg
+                }else{
+                    send_msg(httpRequest.status)
+                }
+                document.getElementById("btn_updmod").disabled = false;
+            };
+
+
+        }
+
+
+
+        function send_msg(msg) {
+            var htmlstr = "";
+            htmlstr += "<tr class=\"danger\"><th>Error</th><th>"+msg+"</th><tr>"
+            var container = document.getElementById("table_lab_body")
+            container.innerHTML = htmlstr
+            document.getElementById("btn_segment").disabled = false;
+        }
+
+        function nerSugg(r_type)
+        {
+            //document.getElementById("btn_search").innerHTML = "Searching..."
+            var url = "http://10.135.33.106:33333/brand?"
+            if(r_type == "reset"){
+                document.getElementById("btn_brand").disabled = false;
+                document.getElementById("btn_segment").disabled = false;
+                return;
+            }else if(r_type == "seg"){
+                url = "http://10.135.33.106:33333/segement?"
+                document.getElementById("btn_segment").disabled = true;
+            }else if(r_type == "brand"){
+                url = "http://10.135.33.106:33333/brand?"
+                document.getElementById("btn_brand").disabled = true;
+            }
+            //document.getElementById("show_msg").innerText = ""
+            var title = document.getElementById("title").value
+            if(title==""){
+                alert("输入不可为空");
+                document.getElementById("btn_segment").disabled = false;
+                return;
+            }
+            var container = document.getElementById("table_lab_body")
+            container.innerHTML = ""
+            var styles = ["active", "danger", "warning", "success", "", "info"]
+            var trs = $("#table_lab_body").find("tr");
+            //alert(trs.length);
+
+            url += "title="+encodeURI(title) 
+            var httpRequest = new XMLHttpRequest();//第一步：建立所需的对象
+            httpRequest.overrideMimeType("application/json");
+            httpRequest.open('GET', url, true);//第二步：打开连接  将请求参数写在url中  ps:"./Ptest.php?name=test&nameone=testone"
+            httpRequest.send();//第三步：发送请求  将请求参数写在URL中
+            httpRequest.onerror=function(error){
+                console.log(error);
+                send_msg(error.toString())
+            };
+            httpRequest.ontimeout=function(error){
+                console.log("timeout",error);
+                send_msg(error.toString())
+            };
+            /**
+             * 获取数据后的处理程序
+             */
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    //var json = httpRequest.responseText;//获取到json字符串，还需解析
+                    var data = JSON.parse(httpRequest.responseText);
+                    //alert(json);
+                    var htmlstr = "";
+                    //document.getElementById("show_msg").innerText = "Model Info:" + data.last_modify_time
+                    for(var i = 0; i < data.items.length; i++){
+                        var item = data.items[i]
+                        htmlstr += "<tr class=\""+styles[i%styles.length]+"\"><th>"+item.index+"</th><th>"+item.meta+"</th><tr>"
+                    }
+                    container.innerHTML = htmlstr
+                    document.getElementById("btn_segment").disabled = false;
+                    document.getElementById("btn_brand").disabled = false;
+                }else{
+                    send_msg(httpRequest.status)
+                }
+            };
+        }
+
+
+
+    </script>
+
+
+</head>
+<body>
+
+
+<div class="page">
+    <div class="container">
+
+        <!--Forms-->
+        <!--
+        <div class="short-heading"><h2 class="tittle"></h2></div>
+         -->
+        <div class="page-header" ><h3>文本抽取</h3></div>
+        <div class="bs-example animated wow fadeInRight" data-wow-duration="1000ms" data-example-id="simple-horizontal-form">
+            <div class="form-group" align="center">
+                <label for="title" class="col-sm-2 control-label">TITLE</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="title" id="title" placeholder="">
+                </div>
+
+                <br><br><br><br>
+
+                <button id="btn_segment" type="button" class="btn btn-1 btn-success" onclick="nerSugg('seg');">分句</button>
+                <button id="btn_brand" type="button" class="btn btn-1 btn-success" onclick="nerSugg('brand');">品牌</button>
+                <button id="btn_reset" type="button" class="btn btn-1 btn-success" onclick="nerSugg('reset');">Reset</button>
+                <br><br>
+                <label class="col-sm-16 control-label" id="show_msg" title="msg">输入信息：例如<br>高中政治必修四知识点6000万家长选择新东方老师在线1对1</label>
+            </div>
+
+        </div>
+
+
+        <div class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table"
+             style="border: 0px solid #eee; overflow-x: auto; overflow-y: auto; height: 400px; ">
+
+
+
+            <table class="table" id="table_lab">
+                <thead><tr><th >index</th><th>meta</th></tr></thead>
+                <tbody id="table_lab_body"><tr class="success">
+                    <th>0</th><th>-</th></tr>
+
+                </tbody>
+            </table>
+
+
+        </div></div>
+</div>
+</body></html>

@@ -115,7 +115,7 @@ var start_date = new Date(new Date()-24*60*60*1000).format("yyyyMMdd");
 var end_date = new Date().format("yyyyMMdd");
 var start_hour = 0;
 var end_hour = 0;
-var comp_days = 1;
+var comp_days = 0;
 document.getElementById("text_start_date").value = start_date;
 document.getElementById("text_end_date").value = end_date;
 document.getElementById("text_start_hour").value = start_hour;
@@ -265,9 +265,23 @@ function getPageData(obj, is_onselect){
         indexed_cols = "channel"
         indexed_cols_name = "类型"
     }
-    
-    
-    if(table_name=="data_pba"){
+
+	if(table_name=="wuxian_rs_flow_tag_data"){
+		table = "wuxian_rs_flow_tag_data";
+		//数据库列名称,与基本运算,@保留小数点位数（整数填写@0）,channel字段保固定不变,数据项之间逗号分割
+		colums = "channel@0,pv1@0,pv2@0,pv3@0,clk@0,(cost/100)@2,(cost/100/clk)@4,cost*10/pv1@2,clk*100/pv1@4,clk*100/pv2@4,clk*100/pv3@4,pv3*100/pv1@2,pv2/pv3@2"
+		//用户侧展示列名,名称之间逗号分割
+		titles = "类型,PV1,PV2_top,PV3_top,点击,消耗,单价,rpm,CTR1,CTR2,CTR3,PVR,ASN"
+		//排序方式chan
+		order_by = "channel desc"
+		//筛选索引列，数字类不支持
+		indexed_cols = "channel"
+		indexed_cols_name = "类型"
+	}
+
+
+
+	if(table_name=="data_pba"){
         table = "mseach_sq_pba_kpi"
         colums = "channel@0,pv_front@0,pv+pv_rec@0,pv/pv_front@2,cost_rec+cost@2,pv@0,adnum@0,adpv@0,clk@2,cost@2,100*clk/adpv@2,pv_rec@0,adnum_rec@0,adpv_rec@0,clk_rec@2,cost_rec@2,100*clk_rec/adpv_rec@2"
         titles = "流量标签,前卡PV,详情PV,前卡点击率,详情消耗,搜索PV,搜索PV2,搜索PV3,搜索点击,搜索消耗,搜索CTR3(%),推荐PV,推荐PV2,推荐PV3,推荐点击,推荐消耗,推荐CTR3(%)"
@@ -474,7 +488,7 @@ function export_csv(){
 			<!--header-->		
 		<div class="page">
 			<div class="container" style="text-align:center">
-			<h3 class="tittle">RD 数据监测（测试版）</h3>
+			<h3 class="tittle">RD 数据监测（非产品口径）</h3>
 			<br><br>
 			<!-- 
 				<div class="short-heading">
@@ -512,8 +526,9 @@ function export_csv(){
 			         class="form-control"
 			  -->
 			 <select id="table_name" name="table_name"  onchange="getPageData('qry', '1');" style="width:400px;"  >
+				 <option value="wuxian_rs_flow_tag_data" selected="selected">RS流量标签试验KPI</option>
 			     <option value="wuxian_top_pic_kpi_stat">图片覆盖率汇总KPI</option>
-			     <option value="wuxian_top_pic_pv2_consume" selected="selected">[luoyuan]图片总体监控</option>
+			     <option value="wuxian_top_pic_pv2_consume">[luoyuan]图片总体监控</option>
 				 <option value="wuxian_top_pic_pv2_consume_classify" >[luoyuan]分客户广告-特殊广告类别监控</option>
 				 <option value="wuxian_top_pic_pv2_consume_style">[luoyuan]分样式监控</option>
                  <option value="data_pba" >[hejiajin]华章分时监测(20191020已终止)</option>
