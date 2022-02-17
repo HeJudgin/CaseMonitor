@@ -279,6 +279,19 @@ function getPageData(obj, is_onselect){
 		indexed_cols_name = "类型"
 	}
 
+	if(table_name=="wuxian_qs_flow_tag_data"){
+		table = "wuxian_qs_flow_tag_data";
+		//数据库列名称,与基本运算,@保留小数点位数（整数填写@0）,channel字段保固定不变,数据项之间逗号分割
+		colums = "channel@0,pv1@0,pv2@0,pv3@0,clk@0,(cost/100)@2,(cost/100/clk)@4,cost*10/pv1@2,clk*100/pv1@4,clk*100/pv2@4,clk*100/pv3@4,pv3*100/pv1@2,pv2/pv3@2"
+		//用户侧展示列名,名称之间逗号分割
+		titles = "类型,PV1,PV2_top,PV3_top,点击,消耗,单价,rpm,CTR1,CTR2,CTR3,PVR,ASN"
+		//排序方式chan
+		order_by = "channel desc"
+		//筛选索引列，数字类不支持
+		indexed_cols = "channel"
+		indexed_cols_name = "类型"
+	}
+
 
 
 	if(table_name=="data_pba"){
@@ -527,6 +540,7 @@ function export_csv(){
 			  -->
 			 <select id="table_name" name="table_name"  onchange="getPageData('qry', '1');" style="width:400px;"  >
 				 <option value="wuxian_rs_flow_tag_data" selected="selected">RS流量标签试验KPI</option>
+				 <option value="wuxian_qs_flow_tag_data">QS流量标签试验KPI</option>
 			     <option value="wuxian_top_pic_kpi_stat">图片覆盖率汇总KPI</option>
 			     <option value="wuxian_top_pic_pv2_consume">[luoyuan]图片总体监控</option>
 				 <option value="wuxian_top_pic_pv2_consume_classify" >[luoyuan]分客户广告-特殊广告类别监控</option>
