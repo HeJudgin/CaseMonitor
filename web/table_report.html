@@ -266,12 +266,42 @@ function getPageData(obj, is_onselect){
         indexed_cols_name = "类型"
     }
 
+	if(table_name=="wuxian_adx_pvr_data"){
+		table = "wuxian_adx_pvr_data";
+		//数据库列名称,与基本运算,@保留小数点位数（整数填写@0）,channel字段保固定不变,数据项之间逗号分割
+		colums = "channel@0,pv1@0,ams_pv2@0,ams_pv3@0,bid_pv2@0,bid_pv3@0,ams_pv3*100/pv1@2,ams_pv2/ams_pv3@2,bid_pv3*100/pv1@2,bid_pv2/bid_pv3@2"
+		//用户侧展示列名,名称之间逗号分割
+		titles = "类型,PV1,AMS_PV2,AMS_PV3,BID_PV2,BID_PV3,AMS_PVR,AMS_ASN,BID_PVR,BID_ASN"
+		//排序方式chan
+		order_by = "channel desc"
+		//筛选索引列，数字类不支持
+		indexed_cols = "channel"
+		indexed_cols_name = "类型"
+	}
+
 	if(table_name=="wuxian_rs_flow_tag_data"){
 		table = "wuxian_rs_flow_tag_data";
 		//数据库列名称,与基本运算,@保留小数点位数（整数填写@0）,channel字段保固定不变,数据项之间逗号分割
 		colums = "channel@0,pv1@0,pv2@0,pv3@0,clk@0,(cost/100)@2,(cost/100/clk)@4,cost*10/pv1@2,clk*100/pv1@4,clk*100/pv2@4,clk*100/pv3@4,pv3*100/pv1@2,pv2/pv3@2"
 		//用户侧展示列名,名称之间逗号分割
 		titles = "类型,PV1,PV2_top,PV3_top,点击,消耗,单价,rpm,CTR1,CTR2,CTR3,PVR,ASN"
+		//排序方式chan
+		order_by = "channel desc"
+		//筛选索引列，数字类不支持
+		indexed_cols = "channel"
+		indexed_cols_name = "类型"
+	}
+
+	if(table_name=="wuxian_rs_flow_tag_ocpc_data"){
+		table = "wuxian_rs_flow_tag_ocpc_data";
+		//数据库列名称,与基本运算,@保留小数点位数（整数填写@0）,channel字段保固定不变,数据项之间逗号分割
+		colums = "channel@0,pv1@0,pv2@0,pv3@0,clk@0,(cost/100)@2,(cost/100/clk)@4,cost*10/pv1@2,clk*100/pv1@4,clk*100/pv2@4,clk*100/pv3@4,pv3*100/pv1@2,pv2/pv3@2,"+
+				"clk_ocpc1@0,(cost_ocpc1/100)@2,(cost_ocpc1/100/clk_ocpc1)@4,cost_ocpc1*10/pv1@2,clk_ocpc1*100/pv1@4,clk_ocpc1*100/pv2_ocpc1@4,clk_ocpc1*100/pv3_ocpc1@4,pv3_ocpc1*100/pv1@2,pv2_ocpc1/pv3_ocpc1@2," +
+				"clk_ocpc2@0,(cost_ocpc2/100)@2,(cost_ocpc2/100/clk_ocpc2)@4,cost_ocpc2*10/pv1@2,clk_ocpc2*100/pv1@4,clk_ocpc2*100/pv2_ocpc2@4,clk_ocpc2*100/pv3_ocpc2@4,pv3_ocpc2*100/pv1@2,pv2_ocpc2/pv3_ocpc2@2"
+		//用户侧展示列名,名称之间逗号分割
+		titles = "类型,PV1,PV2_top,PV3_top,clk,cost,acp,rpm,CTR1,CTR2,CTR3,PVR,ASN," +
+				"clk(s1),cost(s1),acp(s1),rpm(s1),CTR1(s1),CTR2(s1),CTR3(s1),PVR(s1),ASN(s1)," +
+				"clk(s2),cost(s2),acp(s2),rpm(s2),CTR1(s2),CTR2(s2),CTR3(s2),PVR(s2),ASN(s2)"
 		//排序方式chan
 		order_by = "channel desc"
 		//筛选索引列，数字类不支持
@@ -539,7 +569,9 @@ function export_csv(){
 			         class="form-control"
 			  -->
 			 <select id="table_name" name="table_name"  onchange="getPageData('qry', '1');" style="width:400px;"  >
-				 <option value="wuxian_rs_flow_tag_data" selected="selected">RS流量标签试验KPI</option>
+				 <option value="wuxian_rs_flow_tag_ocpc_data">RS流量标签试验KPI(ocpc版本)</option>
+				 <option value="wuxian_adx_pvr_data" selected="selected">ADX召回指标</option>
+				 <option value="wuxian_rs_flow_tag_data">RS流量标签试验KPI</option>
 				 <option value="wuxian_qs_flow_tag_data">QS流量标签试验KPI</option>
 			     <option value="wuxian_top_pic_kpi_stat">图片覆盖率汇总KPI</option>
 			     <option value="wuxian_top_pic_pv2_consume">[luoyuan]图片总体监控</option>

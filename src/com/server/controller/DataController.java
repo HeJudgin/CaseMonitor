@@ -457,9 +457,14 @@ public class DataController extends Controller{
 		String txt_a = getPara("txt_a");
 		String txt_b = getPara("txt_b");
 		String type = getPara("type");
-        String url = "http://10.141.168.42:20191/txt_sim?txt_a="+txt_a+"&txt_b="+txt_b+"&type="+type;
+		HashMap<String, String> ports = new HashMap<>();
+		ports.put("BERT-QK", "20221");
+		ports.put("BERT-QT", "20222");
+		ports.put("DSSM-QK", "20223");
+		ports.put("DSSM-QT", "20224");
+        String url = "http://10.140.113.29:"+ports.get(type)+"/txt_sim?txt_a="+txt_a+"&txt_b="+txt_b+"&type="+type;
         try {
-        	url = "http://10.141.168.42:20191/txt_sim?txt_a="+URLEncoder.encode(txt_b, "utf-8")+"&txt_b="+URLEncoder.encode(txt_a, "utf-8")+"&type="+type;
+        	url = "http://10.140.113.29:"+ports.get(type)+"/txt_sim?txt_a="+URLEncoder.encode(txt_a, "utf-8")+"&txt_b="+URLEncoder.encode(txt_b, "utf-8")+"&type="+type;
 			//url = URLEncoder.encode(url, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -480,9 +485,9 @@ public class DataController extends Controller{
 		//http://10.141.168.42:20191/txt_sim?txt_a=&txt_b=&type=cos
 		String query = getPara("query");
 		String beam_num = getPara("beam_num");
-        String url = "http://10.145.33.106:20205/retrive?query="+query+"&beam_num="+beam_num;
+        String url = "http://localhost:20205/retrive?query="+query+"&beam_num="+beam_num;
         try {
-        	url = "http://10.145.33.106:20205/retrive?query="+URLEncoder.encode(query, "utf-8")+"&beam_num="+beam_num;
+        	url = "http://localhost:20205/retrive?query="+URLEncoder.encode(query, "utf-8")+"&beam_num="+beam_num;
 			//url = URLEncoder.encode(url, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

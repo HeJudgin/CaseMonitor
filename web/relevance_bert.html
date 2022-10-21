@@ -5,17 +5,24 @@
 </script><!--endsmothscrolling-->
 
 <script type="text/javascript">
-function bertSugg(type)
+function bertSugg(type, tag)
 {
+    handleClick();
+    var container = document.getElementById("table_lab_body")
+    if(type == "CLEAR") {
+        container.innerHTML = "" //"<tbody id=\"table_lab_body\"></tbody>"
+        document.getElementById("showResult").innerHTML = "";
+        return;
+    }
     var qry = document.getElementById("inp_txt_a").value
     var title = document.getElementById("inp_txt_b").value
     if(qry=="" || title==""){
         alert("输入不可为空");
         return;
     }
-    
-    var container = document.getElementById("table_lab_body")
-    var styles = ["active", "danger", "warning", "success", "", "info"]
+    // danger: 红色 active：浅灰 info：蓝色  success: 绿色  warning: 黄色
+    var styles = ["", "active", "warning", "info", "danger", "success"]
+        //"active", "danger", "warning", "success", "", "info"]
     var trs = $("#table_lab_body").find("tr");
     //alert(trs.length);
     var url = 'data/bertSugg';
@@ -23,19 +30,53 @@ function bertSugg(type)
 		type: 'POST',
 		url: url,
 		data:{txt_a:qry+'', txt_b:title+'', type:type+''},
+        beforeSend:beforeSend, //发送请求
 		success: function fun(data){
+            console.log(data);
 		    if(data['ret'] == '-1'){
 			    window.location.href = data['url'];
 			    return;
 			}
 		    //alert(data['score']);
-		    document.getElementById("score").value = data['score']
-		    var htmlstr = "<tr class=\""+styles[((trs.length+1)/2)%styles.length]+"\"><th>"+qry+"</th><th>"+title+"</th><th>"+data['score']+"</th><th>"+type+"</th><tr>"
+		    //document.getElementById("score").value = data['score']
+            if(parseFloat(data['score']) < 0.4){
+                level = 0
+            }else if(parseFloat(data['score']) >= 1){
+                level = 5
+            }else{
+                level = parseInt((parseFloat(data['score'])*10-4)+"")
+            }
+            var htmlstr = "<tr class=\""+styles[level]+"\"><th>"+qry+"</th><th>"+title+"</th><th>"+data['score']+"</th><th>"+tag+"</th><tr>"
+		    //var htmlstr = "<tr class=\""+styles[(parseInt(trs.length/2)+1)%styles.length]+"\"><th>"+qry+"</th><th>"+title+"</th><th>"+data['score']+"</th><th>"+tag+"</th><tr>"
 		    container.innerHTML = htmlstr + container.innerHTML
-		}
+            document.getElementById("showResult").innerHTML = "";
+		},
+        error:error,//请求出错
+        complete:complete//请求完成
 	});
 }
+function beforeSend(XMLHttpRequest){
+    document.getElementById("showResult").innerHTML = "";
+    document.getElementById("showResult").innerHTML = "<div id='load'><img src='images/loading.gif' /><div>";
+}
+function complete(XMLHttpRequest, textStatus){
+    document.getElementById("showResult").innerHTML = "";
+}
+function error(XMLHttpRequest, textStatus, errorThrown){
+    // 通常情况下textStatus和errorThown只有其中一个有值
+    document.getElementById("showResult").innerHTML = "<div id='load'>ERROR!</div>";
+}
 
+//点击按钮事件的处理方法
+function handleClick(){
+    let nowTime = +new Date(); //获取当前时间的时间戳
+    if ((nowTime - this.clickTime) < 3000) {//clickTime 是页面定义的一个全局变量，默认值为“-1”
+        alert("已点击，请3秒后再试~~");
+        return;
+    }
+    this.clickTime = +new Date(); //将点击按钮的时间赋值到全局变量
+    //点击按钮需要处理的逻辑代码~~
+}
 
   
 </script>
@@ -52,23 +93,28 @@ function bertSugg(type)
     <!-- 
     <div class="short-heading"><h2 class="tittle"></h2></div>
      -->
-    <div class="page-header" ><h3>语义匹配由BERT提供</h3></div>
+    <div class="page-header" ><h3>商业场景语义匹配</h3></div>
     <div class="bs-example animated wow fadeInRight" data-wow-duration="1000ms" data-example-id="simple-horizontal-form">
         <div class="form-group">
-            <label for="txt_a" class="col-sm-2 control-label">输入句子A</label>
+            <label for="txt_a" class="col-sm-2 control-label">QUERY</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" name="txt_a" id="inp_txt_a" placeholder="">
             </div><br/><br/>
-            <label for="txt_b" class="col-sm-2 control-label">输入句子B</label>
+            <label for="txt_b" class="col-sm-2 control-label">AD</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" name="txt_b" id="inp_txt_b" placeholder="">
             </div><br/><br/>
+            <div class="col-sm-10" style="text-align:center;">
+                <div id="showResult"></div>
+            </div>
+            <br/><br/>
          <div class="col-sm-10" align=center>
-             <input type="text" id="score"/>
-         </div><br/><br/>
-         <div class="col-sm-10" align=center>
-             <button type="button" class="btn btn-1 btn-success" onclick="bertSugg('softmax');">finetune</button>
-             <button type="button" class="btn btn-1 btn-success" onclick="bertSugg('cos');">cosine</button>
+             <button type="button" class="btn btn-1 btn-success" onclick="bertSugg('DSSM-QK', '浅层QK');">浅层QK</button>
+             <button type="button" class="btn btn-1 btn-success" onclick="bertSugg('DSSM-QT', '浅层QT');">浅层QT</button>
+             <button type="button" class="btn btn-1 btn-success" onclick="bertSugg('BERT-QK', '深层QK');">深层QK</button>
+             <button type="button" class="btn btn-1 btn-success" onclick="bertSugg('BERT-QT', '深层QT');">深层QT</button>
+             <button type="button" class="btn btn-1 btn-success" onclick="bertSugg('CLEAR', '');">清空</button>
+
          </div>
     </div>	
 </div>
@@ -79,11 +125,16 @@ function bertSugg(type)
 <br/><br/><br/>
 	
 <table class="table" id="table_lab">
-    <thead><tr><th>query</th><th>title</th><th>SCORE</th><th>METHOD</th></tr></thead>
-    <tbody id="table_lab_body"><tr class="success"><th>胆囊炎的症状及治疗</th><th>胆囊炎的治疗方法</th><th>0.99541974</th><th>softmax</th></tr></tbody>
+    <thead><tr><th>QUERY</th><th>AD</th><th>SCORE</th><th>METHOD</th></tr></thead>
+    <tbody id="table_lab_body">
+        <tr class="success"><th>度假酒店</th><th>青松岭阿尔卡迪亚国际度假酒店</th><th>0.93269736</th><th>深层QT</th></tr>
+    </tbody>
 </table>
 
 
 </div></div>
+    <div class="col-sm-offset-0 col-sm-12" align=center>
+        <p id="foot_msg">copyright@2019~ judginhe@tencent.com</p>
+    </div>
 </div>
 </body></html>
